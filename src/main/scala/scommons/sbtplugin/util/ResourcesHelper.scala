@@ -1,6 +1,6 @@
 package scommons.sbtplugin.util
 
-import java.io.{File, FileInputStream, FilterInputStream, InputStream}
+import java.io.{FileInputStream, FilterInputStream, InputStream}
 import java.util.zip.ZipInputStream
 
 import sbt._
@@ -8,7 +8,7 @@ import sbt._
 object ResourcesHelper {
 
   def extractFromClasspath(targetDir: File,
-                           cp: Def.Classpath,
+                           cp: Seq[Attributed[File]],
                            fileFilter: FileFilter,
                            jarArtifacts: Seq[String] = Nil): Unit = {
 

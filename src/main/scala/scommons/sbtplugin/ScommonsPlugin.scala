@@ -55,7 +55,7 @@ object ScommonsPlugin extends AutoPlugin {
   )
 
   private def copyWebpackResources(webpackDir: File,
-                                   cp: Def.Classpath,
+                                   cp: Seq[Attributed[File]],
                                    fileFilter: FileFilter,
                                    resourcesArtifacts: Seq[ModuleID]): File = {
 

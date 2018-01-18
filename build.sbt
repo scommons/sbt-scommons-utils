@@ -26,7 +26,16 @@ lazy val `sbt-scommons-plugin` = (project in file("."))
     ideaExcludeFolders := List(
       ".idea"
     ),
+    //when run tests with coverage: "sbt clean coverage test coverageReport"
+    coverageMinimum := 80,
+    coverageHighlighting := false,
+
     addSbtPlugin("ch.epfl.scala" % "sbt-scalajs-bundler" % "0.9.0"),
+
+    libraryDependencies ++= Seq(
+      "org.scalatest" %% "scalatest" % "3.0.1" % "test",
+      "org.scalamock" %% "scalamock-scalatest-support" % "3.6.0" % "test"
+    ),
 
     resolvers += "Sonatype Snapshots" at "https://oss.sonatype.org/content/repositories/snapshots/",
 
