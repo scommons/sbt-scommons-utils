@@ -3,7 +3,7 @@ package scommons.sbtplugin
 import org.scalajs.sbtplugin.ScalaJSPlugin.autoImport._
 import sbt.Keys._
 import sbt._
-import scommons.sbtplugin.util.ResourcesHelper
+import scommons.sbtplugin.util.ResourcesUtils
 
 import scalajsbundler.sbtplugin.ScalaJSBundlerPlugin
 import scalajsbundler.sbtplugin.ScalaJSBundlerPlugin.autoImport._
@@ -57,9 +57,9 @@ object ScommonsPlugin extends AutoPlugin {
   private def copyWebpackResources(webpackDir: File,
                                    cp: Seq[Attributed[File]],
                                    fileFilter: FileFilter,
-                                   resourcesArtifacts: Seq[ModuleID]): File = {
+                                   includeArtifacts: Seq[ModuleID]): File = {
 
-    ResourcesHelper.extractFromClasspath(webpackDir, cp, fileFilter)
+    ResourcesUtils.extractFromClasspath(webpackDir, cp, fileFilter, includeArtifacts)
     webpackDir
   }
 }
