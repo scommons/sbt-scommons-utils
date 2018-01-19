@@ -34,7 +34,7 @@ object ScommonsPlugin extends AutoPlugin {
         "*.jpeg" ||
         "*.gif",
     scommonsResourcesArtifacts := Seq(
-      "org.scommons" %%% "scommons-client" % "*"
+      "org.scommons" % "scommons-client_sjs0.6_2.12" % "*"
     ),
     npmUpdate in Compile := {
       copyWebpackResources(

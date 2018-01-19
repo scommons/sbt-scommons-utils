@@ -4,11 +4,16 @@ jdk:
 - oraclejdk8
 env:
   global:
+  - TRAVIS_NODE_VERSION="8"
   - TRAVIS_SBT_VERSION="0.13.16"
   - secure: Ok8G8xfBIuWs37L+udA7ztnXcWyhg8iHOND9fwbVo49Zt8ZzWrkUKYlatJCS5sHD1RO9jaYTHWpAKsF91Ks/U/uLVDC1S1DVO/ZGCe60diD79vJTA3Je0u6K1EKB0ZJ4v8Yd3pkjq/Oi4Zruv5Ij7xVTNAJtJjxjRHWbv7v7UH7jvcsdaWfZGIYRmjbloxqxesnEdqJk8GJl2VPVtzGk8pqswLMIMo93dZLtAFDWixREP3y0GM8FOm7OFlFWApNFmF9iy7GNaNeSxYP+a1Kw93YLq6raNLpnPCsWXfFU4XlCLbdiMoX7+M5wdjTrBR3J9OoOb+n7ECBn6lBV0xq7MsSKp9gmWhH52pQxc3wnpD00gwZyRKwJNwFutuOgYEhJBQ10oonyXQSk/5ikfFhWlmSk6BA7aYbDLRllHTPA5jv5fHdMPBtVzU1aolm0rprVuB70W807wI0VX+AZ2wNarUmVkIeY4WyOlmdnGmMxzCbkKQ5R0wDFs8tqW6V1g87OXyqLegS8WRgJ7HqiRGkCJbw+yr9oXyh9uU5rDFJ5rAo2CV+zhBvlhbTQdWySBExuO3n3WBJrMgl8Qhlw3Li6WaIcTE4QEzqHEw96Z4wLZvz8vDyldcPC+XQpvYG0aJmBXKIyzUFzd3m/tl8FO1PFfalObgaZtXglIDvZ9O3iVfY=
   - secure: M4EAZH5WhJ9VHIlAHr1d0YqrM6bpaeP4meyUmE26ITDSrMaSvwvilTgYkGmADJomlYk1zFV3WXuA2DobdFnqP5ERlqw0uvzKl4P5HEbNUgQ/4tqey3JEQ+TiCd/qVBdtIbN5PH0lkiyVr5Xwd+VWNRyxOVLYzNi62h6hL5BbZNTdLyCQSqw+o5tfcmssz9TnvsIfyIsDwigWUs8B8fcjIkuJaSvp8fT/rjLy0iDgjdSrExsJBp18jvKClofjKlgh6L5SSy1JZOeoiRBlHWn1qgCIE770FWdT3xFJJOutUMf5i3kMM92jU9wUM+89wiv+DDH7sfvWd1Rlg2YfEIWbYpTTlLqEw039x70OrHcJ/dLCeVZGzXQ01LfhUYHPt007G+xy6kKoIP2kjQwQDuo8Bx9DLYsY8bIy9D8yYcPdRIoatMaxESsbExRgpOE9Mv2WI40uoNdi5vN2QGQo4c0QkW3yhik3RnMfLth+FEX+FK68oWeZV1QDvyBHQs0bnluDjU0PDHtJXG0qMNeiH9GMVXn3ohVkgtGmy0lEYdhLBCOwS4MTz+PwVNibk+kUQQk7DBExOwZ2W4xYXrksnEYqo31MP7n/REFyobhznhnA+H1Q7YvvK44GZaxj8+nBsGEBvZgpXMRQ9ZArtC4JvS/pVynqVY4kDw5KEBpSgm0bQ2U=
+before_install:
+- nvm install 6
+- nvm use 6
+- node --version
 script:
-- sbt clean coverage test coverageReport
+- sbt clean coverage publishM2 scripted test coverageReport
 after_success:
 - sbt coveralls
 - if [ $TRAVIS_BRANCH = 'master' ] && [[ "$(<version.sbt)" =~ (.*SNAPSHOT.*) ]]; then

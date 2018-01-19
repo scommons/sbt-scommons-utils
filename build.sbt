@@ -1,5 +1,12 @@
 
 lazy val `sbt-scommons-plugin` = (project in file("."))
+  .settings(ScriptedPlugin.scriptedSettings)
+  .settings(
+    scriptedLaunchOpts := { scriptedLaunchOpts.value ++
+      Seq("-Xmx1024M", "-XX:MaxPermSize=256M", "-Dplugin.version=" + version.value)
+    },
+    scriptedBufferLog := false
+  )
   .settings(
     sbtPlugin := true,
     organization := "org.scommons",
