@@ -6,11 +6,14 @@ lazy val root = (project in file("."))
     scalaVersion := "2.12.2",
 
     libraryDependencies ++= Seq(
-      "org.scommons" %%% "scommons-client" % "0.1.0-SNAPSHOT"
+      ("com.googlecode.web-commons" % "web-common-client" % "1.0.5").intransitive()
     ),
 
     //our plugin settings
     scommonsResourcesFileFilter := "*.css",
+    scommonsResourcesArtifacts ++= Seq(
+      "com.googlecode.web-commons" % "web-common-client" % "*"
+    ),
 
     //scala.js specific settings
     scalaJSModuleKind := ModuleKind.CommonJSModule,

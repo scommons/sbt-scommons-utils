@@ -3,14 +3,12 @@
 -$ exists target/scala-2.12/scalajs-bundler/main/org/scommons/sbtplugin/test/test.png
 $ exists target/scala-2.12/scalajs-bundler/main/org/scommons/sbtplugin/test/test.css
 $ exists target/scala-2.12/scalajs-bundler/main/org/scommons/sbtplugin/test/nested/test.css
--$ exists target/scala-2.12/scalajs-bundler/main/scommons/client/ui/icon/dialog-error.png
-$ exists target/scala-2.12/scalajs-bundler/main/scommons/client/ui/icon/Icon.css
-$ exists target/scala-2.12/scalajs-bundler/main/scommons/client/ui/popup/Popup.css
+-$ exists target/scala-2.12/scalajs-bundler/main/com/googlecode/common/client/ui/icons/dialog-error.png
+$ exists target/scala-2.12/scalajs-bundler/main/com/googlecode/common/client/ui/TablePanel.css
 # check if resource files were copied and extracted in Test
 > test:npmUpdate
 -$ exists target/scala-2.12/scalajs-bundler/test/org/scommons/sbtplugin/test/test.png
 $ exists target/scala-2.12/scalajs-bundler/test/org/scommons/sbtplugin/test/test.css
 $ exists target/scala-2.12/scalajs-bundler/test/org/scommons/sbtplugin/test/nested/test.css
--$ exists target/scala-2.12/scalajs-bundler/test/scommons/client/ui/icon/dialog-error.png
-$ exists target/scala-2.12/scalajs-bundler/test/scommons/client/ui/icon/Icon.css
-$ exists target/scala-2.12/scalajs-bundler/test/scommons/client/ui/popup/Popup.css
+-$ exists target/scala-2.12/scalajs-bundler/test/com/googlecode/common/client/ui/icons/dialog-error.png
+$ exists target/scala-2.12/scalajs-bundler/test/com/googlecode/common/client/ui/TablePanel.css

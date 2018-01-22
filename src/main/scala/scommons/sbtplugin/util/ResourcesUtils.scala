@@ -21,7 +21,7 @@ object ResourcesUtils {
           entry.get(moduleID.key) match {
             case Some(module) if includeArtifacts.isEmpty || includeArtifacts.exists { m =>
               m.organization == module.organization &&
-                m.name == module.name
+                m.name.startsWith(module.name)
             } =>
               processEntries(new FileInputStream(cpEntry),
                 pathName => fileFilter.accept(new File(pathName)),
