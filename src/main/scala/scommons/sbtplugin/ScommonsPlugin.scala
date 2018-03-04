@@ -1,6 +1,5 @@
 package scommons.sbtplugin
 
-import org.scalajs.sbtplugin.ScalaJSPlugin.autoImport._
 import sbt.Keys._
 import sbt._
 import scommons.sbtplugin.util.ResourcesUtils
@@ -34,7 +33,7 @@ object ScommonsPlugin extends AutoPlugin {
         "*.jpeg" ||
         "*.gif",
     scommonsResourcesArtifacts := Seq(
-      "org.scommons" % "scommons-client_sjs0.6_2.12" % "*"
+      "org.scommons" % "scommons-client-ui" % "*"
     ),
     npmUpdate in Compile := {
       copyWebpackResources(
