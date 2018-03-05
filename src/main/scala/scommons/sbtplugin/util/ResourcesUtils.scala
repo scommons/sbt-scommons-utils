@@ -20,8 +20,8 @@ object ResourcesUtils {
         if (cpEntry.isFile && (cpName.endsWith(".jar") || cpName.endsWith(".zip"))) {
           entry.get(moduleID.key) match {
             case Some(module) if includeArtifacts.isEmpty || includeArtifacts.exists { m =>
-              m.organization == module.organization &&
-                m.name.startsWith(module.name)
+              module.organization == m.organization &&
+                module.name.startsWith(m.name)
             } =>
               processEntries(new FileInputStream(cpEntry),
                 pathName => fileFilter.accept(new File(pathName)),
