@@ -30,9 +30,13 @@ lazy val `sbt-scommons-plugin` = (project in file("."))
     //ivyScala := ivyScala.value map {
     //  _.copy(overrideScalaVersion = true)
     //},
-    ideaExcludeFolders := List(
-      ".idea"
-    ),
+    ideaExcludeFolders := {
+      val base = baseDirectory.value
+      List(
+        s"$base/.idea",
+        s"$base/target"
+      )
+    },
     //when run tests with coverage: "sbt clean coverage test coverageReport"
     coverageMinimum := 80,
     coverageHighlighting := false,
