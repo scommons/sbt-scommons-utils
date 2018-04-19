@@ -9,7 +9,7 @@ lazy val `sbt-scommons-plugin` = (project in file("."))
   )
   .settings(
     sbtPlugin := true,
-    organization := "org.scommons",
+    organization := "org.scommons.sbt",
     name := "sbt-scommons-plugin",
     description := "Sbt auto-plugin with common tasks/utils for Scala Commons modules",
     scalaVersion := "2.10.6",
@@ -42,6 +42,7 @@ lazy val `sbt-scommons-plugin` = (project in file("."))
     coverageHighlighting := false,
 
     addSbtPlugin("ch.epfl.scala" % "sbt-scalajs-bundler" % "0.9.0"),
+    addSbtPlugin("com.storm-enroute" % "mecha" % "0.3"),
 
     libraryDependencies ++= Seq(
       "org.scalatest" %% "scalatest" % "3.0.1" % "test",
