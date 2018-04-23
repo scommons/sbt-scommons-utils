@@ -1,0 +1,10 @@
+
+.test {
+  padding: 0 9px;
+}
+
+.test_btn {
+  background: url('./test.png') no-repeat 0px 0px;
+  width: 16px;
+  height: 16px;
+}

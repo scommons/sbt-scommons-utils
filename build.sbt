@@ -40,8 +40,11 @@ lazy val `sbt-scommons-plugin` = (project in file("."))
     //when run tests with coverage: "sbt clean coverage test coverageReport"
     coverageMinimum := 80,
     coverageHighlighting := false,
+    coverageExcludedPackages := "*.mecha.*",
 
     addSbtPlugin("ch.epfl.scala" % "sbt-scalajs-bundler" % "0.9.0"),
+    addSbtPlugin("ch.epfl.scala" % "sbt-web-scalajs-bundler" % "0.9.0"),
+    addSbtPlugin("com.vmunier" % "sbt-web-scalajs" % "1.0.6"),
     addSbtPlugin("com.storm-enroute" % "mecha" % "0.3"),
 
     libraryDependencies ++= Seq(

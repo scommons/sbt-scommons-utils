@@ -1,0 +1,8 @@
+
+################################################################################
+# Assets
+#
+GET     /assets/*file             controllers.Assets.versioned(file)
+
+GET     /                         controllers.ExampleController.index
+GET     /index.html               controllers.ExampleController.index
