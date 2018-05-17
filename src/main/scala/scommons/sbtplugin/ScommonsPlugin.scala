@@ -37,6 +37,7 @@ object ScommonsPlugin extends AutoPlugin {
     ),
     npmUpdate in Compile := {
       copyWebpackResources(
+        streams.value.log,
         (npmUpdate in Compile).value,
         (fullClasspath in Compile).value,
         scommonsResourcesFileFilter.value,
@@ -45,6 +46,7 @@ object ScommonsPlugin extends AutoPlugin {
     },
     npmUpdate in Test := {
       copyWebpackResources(
+        streams.value.log,
         (npmUpdate in Test).value,
         (fullClasspath in Test).value,
         scommonsResourcesFileFilter.value,
@@ -53,12 +55,13 @@ object ScommonsPlugin extends AutoPlugin {
     }
   )
 
-  private def copyWebpackResources(webpackDir: File,
+  private def copyWebpackResources(log: Logger,
+                                   webpackDir: File,
                                    cp: Seq[Attributed[File]],
                                    fileFilter: FileFilter,
                                    includeArtifacts: Seq[ModuleID]): File = {
 
-    ResourcesUtils.extractFromClasspath(webpackDir, cp, fileFilter, includeArtifacts)
+    ResourcesUtils.extractFromClasspath(msg => log.info(msg), webpackDir, cp, fileFilter, includeArtifacts)
     webpackDir
   }
 }

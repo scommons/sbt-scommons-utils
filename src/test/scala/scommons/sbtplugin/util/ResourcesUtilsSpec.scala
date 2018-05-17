@@ -1,16 +1,18 @@
 package scommons.sbtplugin.util
 
-import java.io.{File, FileOutputStream, FilenameFilter}
+import java.io._
 import java.util.zip.{ZipEntry, ZipOutputStream}
 
+import org.scalamock.scalatest.MockFactory
 import org.scalatest.{Assertion, BeforeAndAfterEach, FlatSpec, Matchers}
 import sbt.Keys._
 import sbt._
+import scommons.sbtplugin.util.ResourcesUtils._
 
 class ResourcesUtilsSpec extends FlatSpec
   with Matchers
-  with BeforeAndAfterEach {
-  //with MockFactory {
+  with BeforeAndAfterEach
+  with MockFactory {
 
   private var tmpSourceDir: Option[File] = None
   private var tmpTargetDir: Option[File] = None
@@ -39,10 +41,11 @@ class ResourcesUtilsSpec extends FlatSpec
     val targetDir = tmpTargetDir.get
     val file = new File(sourceDir, "test-artifact.tar.gz")
     IO.write(file, "invalid source")
+    val logger = mockFunction[String, Unit]
 
     //when
     val e = the[IllegalArgumentException] thrownBy {
-      ResourcesUtils.extractFromClasspath(targetDir, Attributed.blankSeq(List(file)), "*.css", Nil)
+      extractFromClasspath(logger, targetDir, Attributed.blankSeq(List(file)), "*.css", Nil)
     }
 
     //then
@@ -54,21 +57,32 @@ class ResourcesUtilsSpec extends FlatSpec
     val sourceDir = tmpSourceDir.get
     val targetDir = tmpTargetDir.get
     val file = new File(sourceDir, "test-artifact.jar")
+    val logger = mockFunction[String, Unit]
 
     //when & then
-    ResourcesUtils.extractFromClasspath(targetDir, Attributed.blankSeq(List(file)), "*.css", Nil)
+    extractFromClasspath(logger, targetDir, Attributed.blankSeq(List(file)), "*.css", Nil)
   }
 
-  it should "copy local resource files" in {
+  it should "copy local resource files only once" in {
     //given
     val sourceDir = tmpSourceDir.get
     val targetDir = tmpTargetDir.get
     val (pathName1, contents1) = writeFile(sourceDir, "com/t/test.png", "file 1")
     val (pathName2, contents2) = writeFile(sourceDir, "com/t/test.css", "file 2")
     val (pathName3, contents3) = writeFile(sourceDir, "com/t3/test.css", "file 3")
+    val logger = mockFunction[String, Unit]
+    inSequence {
+      logger.expects(s"Copied 2 files (out of 2)" +
+        s"\n\tfrom: $sourceDir" +
+        s"\n\tto:   $targetDir")
+      logger.expects(s"Nothing to copy, all 2 files are up to date" +
+        s"\n\tfrom: $sourceDir" +
+        s"\n\tto:   $targetDir")
+    }
 
     //when
-    ResourcesUtils.extractFromClasspath(targetDir, Attributed.blankSeq(List(sourceDir)), "*.css", Nil)
+    extractFromClasspath(logger, targetDir, Attributed.blankSeq(List(sourceDir)), "*.css", Nil)
+    extractFromClasspath(logger, targetDir, Attributed.blankSeq(List(sourceDir)), "*.css", Nil)
 
     //then
     assertFile(targetDir, pathName1, contents1, exists = false)
@@ -86,9 +100,13 @@ class ResourcesUtilsSpec extends FlatSpec
       "com/zip/test.css" -> "file 2",
       "com/zip3/test.css" -> "file 3"
     ))
+    val logger = mockFunction[String, Unit]
+    logger.expects(s"Extracted 2 files (out of 2)" +
+      s"\n\tfrom: $file" +
+      s"\n\tto:   $targetDir")
 
     //when
-    ResourcesUtils.extractFromClasspath(targetDir, List(
+    extractFromClasspath(logger, targetDir, List(
       Attributed(file)(AttributeMap(
         AttributeEntry(moduleID.key, ModuleID("com.org", file.getName, "*"))
       ))
@@ -103,7 +121,7 @@ class ResourcesUtilsSpec extends FlatSpec
     }
   }
 
-  it should "extract resource files from jar-artifact" in {
+  it should "extract resource files from jar-artifact only once" in {
     //given
     val sourceDir = tmpSourceDir.get
     val targetDir = tmpTargetDir.get
@@ -113,9 +131,23 @@ class ResourcesUtilsSpec extends FlatSpec
       "com/jar/test.css" -> "file 2",
       "com/jar3/test.css" -> "file 3"
     ))
+    val logger = mockFunction[String, Unit]
+    inSequence {
+      logger.expects(s"Extracted 2 files (out of 2)" +
+        s"\n\tfrom: $file" +
+        s"\n\tto:   $targetDir")
+      logger.expects(s"Nothing to extract, all 2 files are up to date" +
+        s"\n\tfrom: $file" +
+        s"\n\tto:   $targetDir")
+    }
 
     //when
-    ResourcesUtils.extractFromClasspath(targetDir, List(
+    extractFromClasspath(logger, targetDir, List(
+      Attributed(file)(AttributeMap(
+        AttributeEntry(moduleID.key, ModuleID("com.org", file.getName, "*"))
+      ))
+    ), "*.css", Nil)
+    extractFromClasspath(logger, targetDir, List(
       Attributed(file)(AttributeMap(
         AttributeEntry(moduleID.key, ModuleID("com.org", file.getName, "*"))
       ))
@@ -146,9 +178,13 @@ class ResourcesUtilsSpec extends FlatSpec
       "com/ModuleID/test.css" -> "file 2",
       "com/ModuleID3/test.css" -> "file 3"
     ))
+    val logger = mockFunction[String, Unit]
+    logger.expects(s"Extracted 2 files (out of 2)" +
+      s"\n\tfrom: $file" +
+      s"\n\tto:   $targetDir")
 
     //when
-    ResourcesUtils.extractFromClasspath(targetDir, List(
+    extractFromClasspath(logger, targetDir, List(
       Attributed(file0)(AttributeMap(
         AttributeEntry(moduleID.key, ModuleID("com.org0", file0.getName, "*"))
       )),
@@ -170,6 +206,18 @@ class ResourcesUtilsSpec extends FlatSpec
       else
         assertFile(targetDir, pathName, contents)
     }
+  }
+
+  it should "not close input stream in InputStreamIgnoreClose class" in {
+    //given
+    val stream = mock[InputStreamIgnoreClose]
+    val streamIgnoreClose = new InputStreamIgnoreClose(stream)
+
+    //then
+    (stream.close _).expects().never()
+
+    //when
+    streamIgnoreClose.close()
   }
 
   private def assertFile(dir: File, relPathName: String, contents: String, exists: Boolean = true): Assertion = {
