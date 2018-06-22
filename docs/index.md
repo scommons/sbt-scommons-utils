@@ -70,19 +70,30 @@ by the `WebScalaJSBundlerPlugin`.
 Since this plugin is sbt `auto-plugin`, it will be automatically activated
 for all the projects that depend on `WebScalaJSBundlerPlugin`.
 
-It provides the following settings:
+It provides the following task:
 ```scala
 val webpackAssets: TaskKey[Seq[PathMapping]] = taskKey[Seq[PathMapping]](
   "Assets (resources that are not CommonJS modules) produced by Webpack"
 )
 ```
 
-To use it, add the following to your web-project (server) settings:
+It depends on the `webpack` task which in turn depends on `scalajs` task.
+Thus this task should be scoped by a `scalajs` task (`fastOptJS` or `fullOptJS`).
+
+To use it for particular client project, add the following to your web-project (server) settings:
 ```scala
 settings(
     webpackAssets in fastOptJS ++= WebpackAssets.ofProject(fastOptJS, clientProject) { build => (build / "styles").*** }.value,
     webpackAssets in fullOptJS ++= WebpackAssets.ofProject(fullOptJS, clientProject) { build => (build / "styles").*** }.value
 )
 ```
+(here, `clientProject` is your client sbt `Project` definition.)
 
-Here, `clientProject` is your client sbt `Project` definition.
+Or for all specified `scalaJSProjects`:
+```scala
+settings(
+    webpackAssets in fastOptJS ++= WebpackAssets.ofScalaJSProjects(fastOptJS) { build => (build / "styles").*** }.value,
+    webpackAssets in fullOptJS ++= WebpackAssets.ofScalaJSProjects(fullOptJS) { build => (build / "styles").*** }.value
+)
+```
+

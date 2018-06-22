@@ -40,12 +40,24 @@ lazy val `sbt-scommons-plugin` = (project in file("."))
     //when run tests with coverage: "sbt clean coverage test coverageReport"
     coverageMinimum := 80,
     coverageHighlighting := false,
-    coverageExcludedPackages := ".*mecha.*",
+    coverageExcludedPackages := ".*mecha.*;.*project.*",
 
     addSbtPlugin("ch.epfl.scala" % "sbt-scalajs-bundler" % "0.9.0"),
     addSbtPlugin("ch.epfl.scala" % "sbt-web-scalajs-bundler" % "0.9.0"),
     addSbtPlugin("com.vmunier" % "sbt-web-scalajs" % "1.0.6"),
+
+    // when updating plugins versions here,
+    // don't forget to set the same versions in `scommons.sbtplugin.project.CommonLibs` !!!
+    //
+    addSbtPlugin("com.typesafe.play" % "sbt-plugin" % "2.6.7"), // same as CommonLibs.playVer
+    addSbtPlugin("com.typesafe.sbt" % "sbt-gzip" % "1.0.0"),
+    addSbtPlugin("com.typesafe.sbt" % "sbt-digest" % "1.1.1"),
+    
     addSbtPlugin("com.storm-enroute" % "mecha" % "0.3"),
+    addSbtPlugin("com.github.mpeltonen" % "sbt-idea" % "1.6.0"),
+    
+    addSbtPlugin("org.scoverage" % "sbt-scoverage" % "1.5.1"),
+    addSbtPlugin("org.scoverage" % "sbt-coveralls" % "1.2.4"),
 
     libraryDependencies ++= Seq(
       "org.scalatest" %% "scalatest" % "3.0.1" % "test",

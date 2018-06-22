@@ -24,6 +24,12 @@ object WebpackAssetsPlugin extends AutoPlugin {
       *   webpackAssets in fastOptJS ++= WebpackAssets.ofProject(fastOptJS, clientProject) { build => (build / "styles").*** }.value,
       *   webpackAssets in fullOptJS ++= WebpackAssets.ofProject(fullOptJS, clientProject) { build => (build / "styles").*** }.value
       * }}}
+      * 
+      * or for all specified `scalaJSProjects`:
+      * {{{
+      *   webpackAssets in fastOptJS ++= WebpackAssets.ofScalaJSProjects(fastOptJS) { build => (build / "styles").*** }.value,
+      *   webpackAssets in fullOptJS ++= WebpackAssets.ofScalaJSProjects(fullOptJS) { build => (build / "styles").*** }.value
+      * }}}
       *
       * @see [[scommons.sbtplugin.WebpackAssets.ofProject]]
       */
