@@ -58,6 +58,8 @@ lazy val `sbt-scommons-plugin` = (project in file("."))
     
     addSbtPlugin("org.scoverage" % "sbt-scoverage" % "1.5.1"),
     addSbtPlugin("org.scoverage" % "sbt-coveralls" % "1.2.4"),
+    
+    addSbtPlugin("com.jsuereth" % "sbt-pgp" % "1.1.0"),
 
     libraryDependencies ++= Seq(
       "org.scalatest" %% "scalatest" % "3.0.1" % "test",
