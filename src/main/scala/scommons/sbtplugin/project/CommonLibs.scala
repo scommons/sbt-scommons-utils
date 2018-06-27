@@ -1,5 +1,6 @@
 package scommons.sbtplugin.project
 
+import org.scalajs.sbtplugin.ScalaJSPlugin.autoImport._
 import sbt._
 
 trait CommonLibs {
@@ -25,6 +26,7 @@ trait CommonLibs {
   //////////////////////////////////////////////////////////////////////////////
   // js dependencies
 
+  lazy val scalajsDom = Def.setting("org.scala-js" %%% "scalajs-dom" % "0.9.2")
 }
 
 object CommonLibs extends CommonLibs
