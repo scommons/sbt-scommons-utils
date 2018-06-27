@@ -7,12 +7,16 @@ trait CommonLibs {
 
   val akkaVersion = "2.5.6"
   val playVer = "2.6.7" // should be the same as Play sbt-plugin version (see build.sbt)
+  val playJsonVer = "2.6.7"
+  val playWsVer = "1.1.3"
 
   //////////////////////////////////////////////////////////////////////////////
   // jvm dependencies
 
   lazy val play = Def.setting("com.typesafe.play" %% "play" % playVer)
   lazy val scaldiPlay = Def.setting("org.scaldi" %% "scaldi-play" % "0.5.17")
+  lazy val playJson = Def.setting("com.typesafe.play" %% "play-json" % playJsonVer)
+  lazy val playWs = Def.setting("com.typesafe.play" %% "play-ahc-ws-standalone" % playWsVer)
 
   lazy val logback = Def.setting("ch.qos.logback" % "logback-classic" % "1.1.7")
   lazy val slf4jApi = Def.setting("org.slf4j" % "slf4j-api" % "1.7.12")
@@ -27,6 +31,8 @@ trait CommonLibs {
   // js dependencies
 
   lazy val scalajsDom = Def.setting("org.scala-js" %%% "scalajs-dom" % "0.9.2")
+
+  lazy val playJsonJs = Def.setting("com.typesafe.play" %%% "play-json" % playJsonVer)
 }
 
 object CommonLibs extends CommonLibs
