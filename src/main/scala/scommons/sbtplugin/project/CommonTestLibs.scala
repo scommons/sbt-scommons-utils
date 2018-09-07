@@ -7,6 +7,7 @@ trait CommonTestLibs {
 
   val scalaTestVersion = "3.0.1"
   val scalaMockVersion = "3.6.0"
+  val dockerTestkitVersion = "0.9.3"
 
   val akkaVersion: String = CommonLibs.akkaVersion
 
@@ -17,6 +18,9 @@ trait CommonTestLibs {
 
   lazy val scalaTestPlusPlay = Def.setting("org.scalatestplus.play" %% "scalatestplus-play" % "3.1.2")
   lazy val akkaStreamTestKit = Def.setting("com.typesafe.akka" %% "akka-stream-testkit" % akkaVersion)
+
+  lazy val dockerTestkitScalatest = Def.setting("com.whisk" %% "docker-testkit-scalatest" % dockerTestkitVersion)
+  lazy val dockerTestkitImpl = Def.setting("com.whisk" %% "docker-testkit-impl-spotify" % dockerTestkitVersion)
 
   // Scala.js dependencies
 

@@ -19,6 +19,8 @@ trait CommonPlayModule extends CommonModule {
 
   def scommonsServiceVersion: String
   
+  def scommonsApiVersion: String
+  
   override def definition: Project = {
     super.definition
       .enablePlugins(PlayScala, WebScalaJSBundlerPlugin)
@@ -42,11 +44,15 @@ trait CommonPlayModule extends CommonModule {
   override def internalDependencies: Seq[ClasspathDep[ProjectReference]] = Nil
 
   override def superRepoProjectsDependencies: Seq[(String, String, Option[String])] = Seq(
+    ("scommons-service", "scommons-service-util", None),
     ("scommons-service", "scommons-service-play", None),
-    ("scommons-client", "scommons-client-assets", None)
+    ("scommons-client", "scommons-client-assets", None),
+    // tests
+    ("scommons-service", "scommons-service-test", Some("it,test"))
   )
 
   override def runtimeDependencies: Def.Initialize[Seq[ModuleID]] = Def.setting(Seq(
+    "org.scommons.service" %% "scommons-service-util" % scommonsServiceVersion,
     "org.scommons.service" %% "scommons-service-play" % scommonsServiceVersion,
     "org.scommons.client" %% "scommons-client-assets" % scommonsClientVersion,
 
@@ -59,6 +65,9 @@ trait CommonPlayModule extends CommonModule {
   ))
 
   override def testDependencies: Def.Initialize[Seq[ModuleID]] = Def.setting(Seq(
+    "org.scommons.service" %% "scommons-service-test" % scommonsServiceVersion,
+    "org.scommons.api" %% "scommons-api-play-ws" % scommonsApiVersion,
+    
     CommonTestLibs.scalaTestPlusPlay.value,
     CommonTestLibs.akkaStreamTestKit.value,
     CommonTestLibs.mockito.value
