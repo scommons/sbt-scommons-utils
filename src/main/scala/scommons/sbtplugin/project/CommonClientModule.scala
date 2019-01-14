@@ -14,6 +14,7 @@ import scalajsbundler.sbtplugin.ScalaJSBundlerPlugin.autoImport._
 
 trait CommonClientModule extends CommonModule {
 
+  def scommonsReactVersion: String
   def scommonsClientVersion: String
 
   override def definition: Project = {
@@ -39,7 +40,8 @@ trait CommonClientModule extends CommonModule {
 
   override def superRepoProjectsDependencies: Seq[(String, String, Option[String])] = Seq(
     ("scommons-client", "scommons-client-ui", None),
-    ("scommons-client", "scommons-client-test", Some("test"))
+    ("scommons-react", "scommons-react-core", None),
+    ("scommons-react", "scommons-react-test-dom", Some("test"))
   )
 
   override def runtimeDependencies: Def.Initialize[Seq[ModuleID]] = Def.setting(Seq(
@@ -47,7 +49,7 @@ trait CommonClientModule extends CommonModule {
   ))
 
   override def testDependencies: Def.Initialize[Seq[ModuleID]] = Def.setting(Seq(
-    "org.scommons.client" %%% "scommons-client-test" % scommonsClientVersion
+    "org.scommons.react" %%% "scommons-react-test-dom" % scommonsReactVersion
   ).map(_  % "test"))
 }
 
