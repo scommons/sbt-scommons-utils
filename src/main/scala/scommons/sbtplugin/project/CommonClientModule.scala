@@ -61,7 +61,7 @@ object CommonClientModule {
     //Opt-in @ScalaJSDefined by default
     scalacOptions += "-P:scalajs:sjsDefinedByDefault",
     requiresDOM in Test := true,
-    version in webpack := "1.14.0", //TODO: migrate to default (latest version)
+    version in webpack := "3.5.5",
     emitSourceMaps := false,
 
     ideaExcludeFolders ++= {
