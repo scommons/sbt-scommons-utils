@@ -64,6 +64,20 @@ object CommonClientModule {
     version in webpack := "3.5.5",
     emitSourceMaps := false,
 
+    npmDependencies in Compile ++= Seq(
+      "react" -> "^16.6.3",
+      "react-dom" -> "^16.6.3"
+    ),
+    npmResolutions in Compile ++= Map(
+      "react" -> "^16.6.3",
+      "react-dom" -> "^16.6.3"
+    ),
+    
+    npmResolutions in Test ++= Map(
+      "react" -> "^16.6.3",
+      "react-dom" -> "^16.6.3"
+    ),
+
     ideaExcludeFolders ++= {
       val base = baseDirectory.value
       List(
