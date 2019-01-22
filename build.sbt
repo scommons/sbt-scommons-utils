@@ -1,4 +1,6 @@
 
+val ideExcludedDirectories = SettingKey[Seq[File]]("ide-excluded-directories")
+
 lazy val `sbt-scommons-plugin` = (project in file("."))
   .settings(ScriptedPlugin.scriptedSettings)
   .settings(
@@ -30,11 +32,11 @@ lazy val `sbt-scommons-plugin` = (project in file("."))
     //ivyScala := ivyScala.value map {
     //  _.copy(overrideScalaVersion = true)
     //},
-    ideaExcludeFolders := {
+    ideExcludedDirectories := {
       val base = baseDirectory.value
       List(
-        s"$base/.idea",
-        s"$base/target"
+        base / ".idea",
+        base / "target"
       )
     },
     //when run tests with coverage: "sbt clean coverage test coverageReport"
@@ -54,7 +56,6 @@ lazy val `sbt-scommons-plugin` = (project in file("."))
     addSbtPlugin("com.typesafe.sbt" % "sbt-digest" % "1.1.1"),
     
     addSbtPlugin("com.storm-enroute" % "mecha" % "0.3"),
-    addSbtPlugin("com.github.mpeltonen" % "sbt-idea" % "1.6.0"),
     
     addSbtPlugin("org.scoverage" % "sbt-scoverage" % "1.5.1"),
     addSbtPlugin("org.scoverage" % "sbt-coveralls" % "1.2.4"),

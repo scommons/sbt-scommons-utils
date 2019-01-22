@@ -1,6 +1,5 @@
 package scommons.sbtplugin.project
 
-import org.sbtidea.SbtIdeaPlugin.ideaExcludeFolders
 import org.scalajs.sbtplugin.ScalaJSPlugin.autoImport._
 import sbt.Keys._
 import sbt._
@@ -26,6 +25,11 @@ trait CommonModule extends ProjectDef with MechaProjectBuild {
 
 object CommonModule {
 
+  // got from here:
+  // https://github.com/JetBrains/sbt-ide-settings
+  //
+  val ideExcludedDirectories = SettingKey[Seq[File]]("ide-excluded-directories")
+
   val settings: Seq[Setting[_]] = Seq(
     scalaVersion := "2.12.2",
     scalacOptions ++= Seq(
@@ -40,11 +44,11 @@ object CommonModule {
     //ivyScala := ivyScala.value map {
     //  _.copy(overrideScalaVersion = true)
     //},
-    ideaExcludeFolders := {
+    ideExcludedDirectories := {
       val base = baseDirectory.value
       List(
-        s"$base/.idea",
-        s"$base/target"
+        base / ".idea",
+        base / "target"
       )
     },
     //when run tests with coverage: "sbt clean coverage test it:test coverageReport && sbt coverageAggregate"

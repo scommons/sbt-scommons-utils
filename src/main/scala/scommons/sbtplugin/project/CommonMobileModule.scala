@@ -1,10 +1,10 @@
 package scommons.sbtplugin.project
 
-import org.sbtidea.SbtIdeaPlugin.ideaExcludeFolders
 import org.scalajs.sbtplugin.ScalaJSPlugin
 import org.scalajs.sbtplugin.ScalaJSPlugin.autoImport._
 import sbt.Keys._
 import sbt._
+import scommons.sbtplugin.project.CommonModule.ideExcludedDirectories
 
 import scalajsbundler.sbtplugin.ScalaJSBundlerPlugin
 import scalajsbundler.sbtplugin.ScalaJSBundlerPlugin.autoImport._
@@ -77,11 +77,11 @@ object CommonMobileModule {
       "react-dom" -> "^16.6.3"
     ),
 
-    ideaExcludeFolders ++= {
+    ideExcludedDirectories ++= {
       val base = baseDirectory.value
       List(
-        s"$base/build",
-        s"$base/node_modules"
+        base / "build",
+        base / "node_modules"
       )
     },
     cleanKeepFiles ++= Seq(

@@ -1,11 +1,11 @@
 package scommons.sbtplugin.project
 
 import com.typesafe.sbt.web.SbtWeb
-import org.sbtidea.SbtIdeaPlugin.ideaExcludeFolders
 import org.scalajs.sbtplugin.ScalaJSPlugin
 import org.scalajs.sbtplugin.ScalaJSPlugin.autoImport._
 import sbt.Keys._
 import sbt._
+import scommons.sbtplugin.project.CommonModule.ideExcludedDirectories
 import scoverage.ScoverageKeys._
 import webscalajs.ScalaJSWeb
 
@@ -78,11 +78,11 @@ object CommonClientModule {
       "react-dom" -> "^16.6.3"
     ),
 
-    ideaExcludeFolders ++= {
+    ideExcludedDirectories ++= {
       val base = baseDirectory.value
       List(
-        s"$base/build",
-        s"$base/node_modules"
+        base / "build",
+        base / "node_modules"
       )
     },
     cleanKeepFiles ++= Seq(
