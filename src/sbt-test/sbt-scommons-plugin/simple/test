@@ -1,5 +1,5 @@
 # check if resource files were copied and extracted in Compile
-> compile:npmUpdate
+> fullOptJS
 $ absent client/target/scala-2.12/scalajs-bundler/main/scommons/sbtplugin/test/test.jpeg
 $ exists client/target/scala-2.12/scalajs-bundler/main/scommons/sbtplugin/test/test.png
 $ exists client/target/scala-2.12/scalajs-bundler/main/scommons/sbtplugin/test/test.css
@@ -8,7 +8,7 @@ $ exists client/target/scala-2.12/scalajs-bundler/main/com/googlecode/common/cli
 $ exists client/target/scala-2.12/scalajs-bundler/main/com/googlecode/common/client/ui/TablePanel.css
 
 # check if resource files were copied and extracted in Test
-> test:npmUpdate
+> test:fastOptJS
 $ absent client/target/scala-2.12/scalajs-bundler/test/scommons/sbtplugin/test/test.jpeg
 $ exists client/target/scala-2.12/scalajs-bundler/test/scommons/sbtplugin/test/test.png
 $ exists client/target/scala-2.12/scalajs-bundler/test/scommons/sbtplugin/test/test.css

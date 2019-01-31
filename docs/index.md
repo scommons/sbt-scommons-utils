@@ -13,7 +13,8 @@ Welcome to the **Scala Commons Sbt Plugin** documentation page!
 
 The main purpose of this sbt `auto-plugin` is to copy/extract resource files
 (`css`, `png`, `jpeg`) from project dependencies to the `webpack` folder
-during the `npmUpdate` task, so they can be used later by `webpack` task.
+during the `fastOptJS/fullOptJS` `scalajs` task, so they can be used later
+by the `webpack` task.
 
 This is very similar to copying/extracting of `*.js` files,
 which is already provided by the `ScalaJSBundlerPlugin`.

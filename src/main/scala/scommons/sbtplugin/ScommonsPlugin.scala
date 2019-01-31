@@ -1,11 +1,11 @@
 package scommons.sbtplugin
 
+import org.scalajs.sbtplugin.ScalaJSPlugin.autoImport._
 import sbt.Keys._
 import sbt._
 import scommons.sbtplugin.util.ResourcesUtils
 
 import scalajsbundler.sbtplugin.ScalaJSBundlerPlugin
-import scalajsbundler.sbtplugin.ScalaJSBundlerPlugin.autoImport._
 
 object ScommonsPlugin extends AutoPlugin {
 
@@ -35,33 +35,32 @@ object ScommonsPlugin extends AutoPlugin {
     scommonsResourcesArtifacts := Seq(
       "org.scommons.client" % "scommons-client-ui" % "*"
     ),
-    npmUpdate in Compile := {
-      copyWebpackResources(
-        streams.value.log,
-        (npmUpdate in Compile).value,
-        (fullClasspath in Compile).value,
-        scommonsResourcesFileFilter.value,
-        scommonsResourcesArtifacts.value
-      )
-    },
-    npmUpdate in Test := {
-      copyWebpackResources(
-        streams.value.log,
-        (npmUpdate in Test).value,
-        (fullClasspath in Test).value,
-        scommonsResourcesFileFilter.value,
-        scommonsResourcesArtifacts.value
-      )
-    }
+
+    sjsStageSettings(fastOptJS, Compile),
+    sjsStageSettings(fullOptJS, Compile),
+    sjsStageSettings(fastOptJS, Test),
+    sjsStageSettings(fullOptJS, Test)
   )
+
+  private def sjsStageSettings(sjsStage: TaskKey[Attributed[File]], config: ConfigKey) = {
+    sjsStage in config := {
+      copyWebpackResources(
+        streams.value.log,
+        (crossTarget in (config, sjsStage)).value,
+        (fullClasspath in config).value,
+        scommonsResourcesFileFilter.value,
+        scommonsResourcesArtifacts.value
+      )
+      (sjsStage in config).value
+    }
+  }
 
   private def copyWebpackResources(log: Logger,
                                    webpackDir: File,
                                    cp: Seq[Attributed[File]],
                                    fileFilter: FileFilter,
-                                   includeArtifacts: Seq[ModuleID]): File = {
+                                   includeArtifacts: Seq[ModuleID]): Unit = {
 
     ResourcesUtils.extractFromClasspath(msg => log.info(msg), webpackDir, cp, fileFilter, includeArtifacts)
-    webpackDir
   }
 }
