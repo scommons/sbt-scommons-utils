@@ -1,14 +1,12 @@
 package scommons.sbtplugin.mecha
 
-import org.stormenroute.mecha.{ConfigParsers, Repo}
 import sbt._
 
 /**
   * Optionally mixed into projects builds within a super-repository
   * for source-level dependencies.
   *
-  * NOTE: Temporarily placed here, until this PR is merged:
-  *       https://github.com/storm-enroute/mecha/pull/7
+  * NOTE: Temporarily put here, until mecha sbt-plugin published for sbt 1.x
   */
 trait MechaProjectBuild {
 

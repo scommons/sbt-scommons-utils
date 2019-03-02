@@ -2,7 +2,7 @@
 val ideExcludedDirectories = SettingKey[Seq[File]]("ide-excluded-directories")
 
 lazy val `sbt-scommons-plugin` = (project in file("."))
-  .settings(ScriptedPlugin.scriptedSettings)
+  .enablePlugins(SbtPlugin)
   .settings(
     scriptedLaunchOpts := { scriptedLaunchOpts.value ++
       Seq("-Xmx1024M", "-XX:MaxPermSize=256M", "-Dplugin.version=" + version.value)
@@ -14,7 +14,7 @@ lazy val `sbt-scommons-plugin` = (project in file("."))
     organization := "org.scommons.sbt",
     name := "sbt-scommons-plugin",
     description := "Sbt auto-plugin with common tasks/utils for Scala Commons modules",
-    scalaVersion := "2.10.6",
+    scalaVersion := "2.12.7",
     scalacOptions ++= Seq(
       //"-Xcheckinit",
       "-Xfatal-warnings",
@@ -29,9 +29,7 @@ lazy val `sbt-scommons-plugin` = (project in file("."))
       "-Ywarn-value-discard",
       "-Xfuture"
     ),
-    //ivyScala := ivyScala.value map {
-    //  _.copy(overrideScalaVersion = true)
-    //},
+    
     ideExcludedDirectories := {
       val base = baseDirectory.value
       List(
@@ -39,23 +37,25 @@ lazy val `sbt-scommons-plugin` = (project in file("."))
         base / "target"
       )
     },
+    
     //when run tests with coverage: "sbt clean coverage test coverageReport"
     coverageMinimum := 80,
     coverageHighlighting := false,
     coverageExcludedPackages := ".*mecha.*;.*project.*",
 
-    addSbtPlugin("ch.epfl.scala" % "sbt-scalajs-bundler" % "0.9.0"),
-    addSbtPlugin("ch.epfl.scala" % "sbt-web-scalajs-bundler" % "0.9.0"),
-    addSbtPlugin("com.vmunier" % "sbt-web-scalajs" % "1.0.6"),
+    addSbtPlugin("org.portable-scala" % "sbt-scalajs-crossproject" % "0.6.0"),
+    addSbtPlugin("org.scala-js" % "sbt-scalajs" % "0.6.26"),
+    addSbtPlugin("ch.epfl.scala" % "sbt-scalajs-bundler" % "0.14.0"),
+    addSbtPlugin("ch.epfl.scala" % "sbt-web-scalajs-bundler" % "0.14.0"),
 
     // when updating plugins versions here,
     // don't forget to set the same versions in `scommons.sbtplugin.project.CommonLibs` !!!
     //
-    addSbtPlugin("com.typesafe.play" % "sbt-plugin" % "2.6.7"), // same as CommonLibs.playVer
-    addSbtPlugin("com.typesafe.sbt" % "sbt-gzip" % "1.0.0"),
-    addSbtPlugin("com.typesafe.sbt" % "sbt-digest" % "1.1.1"),
+    addSbtPlugin("com.typesafe.play" % "sbt-plugin" % "2.6.21"), // same as CommonLibs.playVer
+    addSbtPlugin("com.typesafe.sbt" % "sbt-gzip" % "1.0.2"),
+    addSbtPlugin("com.typesafe.sbt" % "sbt-digest" % "1.1.3"),
     
-    addSbtPlugin("com.storm-enroute" % "mecha" % "0.3"),
+    //addSbtPlugin("com.storm-enroute" % "mecha" % "0.3"), //TODO: use version for sbt 1.x
     
     addSbtPlugin("org.scoverage" % "sbt-scoverage" % "1.5.1"),
     addSbtPlugin("org.scoverage" % "sbt-coveralls" % "1.2.4"),

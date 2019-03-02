@@ -1,6 +1,6 @@
 package scommons.sbtplugin.project
 
-import org.scalajs.sbtplugin.ScalaJSPlugin.autoImport._
+import org.portablescala.sbtplatformdeps.PlatformDepsPlugin.autoImport._
 import sbt.Keys._
 import sbt._
 import scommons.sbtplugin.mecha.MechaProjectBuild
@@ -31,7 +31,7 @@ object CommonModule {
   val ideExcludedDirectories = SettingKey[Seq[File]]("ide-excluded-directories")
 
   val settings: Seq[Setting[_]] = Seq(
-    scalaVersion := "2.12.2",
+    scalaVersion := "2.12.8",
     scalacOptions ++= Seq(
       //"-Xcheckinit",
       "-Xfatal-warnings",

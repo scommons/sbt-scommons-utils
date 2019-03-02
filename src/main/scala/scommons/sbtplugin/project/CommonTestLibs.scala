@@ -1,13 +1,13 @@
 package scommons.sbtplugin.project
 
-import org.scalajs.sbtplugin.ScalaJSPlugin.autoImport._
+import org.portablescala.sbtplatformdeps.PlatformDepsPlugin.autoImport._
 import sbt._
 
 trait CommonTestLibs {
 
-  val scalaTestVersion = "3.0.1"
+  val scalaTestVersion = "3.0.5"
   val scalaMockVersion = "3.6.0"
-  val dockerTestkitVersion = "0.9.3"
+  val dockerTestkitVersion = "0.9.6"
 
   val akkaVersion: String = CommonLibs.akkaVersion
 

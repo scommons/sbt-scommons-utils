@@ -1,6 +1,7 @@
 package scommons.sbtplugin.project
 
 import com.typesafe.sbt.web.SbtWeb
+import org.portablescala.sbtplatformdeps.PlatformDepsPlugin.autoImport._
 import org.scalajs.sbtplugin.ScalaJSPlugin
 import org.scalajs.sbtplugin.ScalaJSPlugin.autoImport._
 import sbt.Keys._
@@ -60,7 +61,7 @@ object CommonClientModule {
     
     //Opt-in @ScalaJSDefined by default
     scalacOptions += "-P:scalajs:sjsDefinedByDefault",
-    requiresDOM in Test := true,
+    requireJsDomEnv in Test := true,
     version in webpack := "3.5.5",
     emitSourceMaps := false,
 

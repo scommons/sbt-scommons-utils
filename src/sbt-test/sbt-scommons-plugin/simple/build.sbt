@@ -11,7 +11,7 @@ lazy val client = (project in file("client"))
   .enablePlugins(ScalaJSPlugin, ScalaJSBundlerPlugin, ScalaJSWeb)
   .settings(
     version := "0.1.0-SNAPSHOT",
-    scalaVersion := "2.12.2",
+    scalaVersion := "2.12.8",
 
     libraryDependencies ++= Seq(
       ("com.googlecode.web-commons" % "web-common-client" % "1.0.5").intransitive()
@@ -48,19 +48,19 @@ lazy val server = (project in file("server"))
   .disablePlugins(PlayLayoutPlugin)
   .settings(
     version := "0.1.0-SNAPSHOT",
-    scalaVersion := "2.12.2",
+    scalaVersion := "2.12.8",
 
     libraryDependencies ++= Seq(
       "org.scaldi" %% "scaldi-play" % "0.5.17",
       PlayImport.guice,
       "org.scalatestplus.play" %% "scalatestplus-play" % "3.1.2" % Test,
-      "com.typesafe.akka" %% "akka-stream-testkit" % "2.5.6" % Test
+      "com.typesafe.akka" %% "akka-stream-testkit" % "2.5.19" % Test
     ),
 
     scalaJSProjects := Seq(client),
     pipelineStages in Assets := Seq(scalaJSPipeline),
 
     // Expose as sbt-web assets some webpack build files of the `client` project
-    webpackAssets in fastOptJS ++= WebpackAssets.ofScalaJSProjects(fastOptJS) { build => (build / "styles").*** }.value,
-    webpackAssets in fullOptJS ++= WebpackAssets.ofScalaJSProjects(fullOptJS) { build => (build / "styles").*** }.value
+    webpackAssets in fastOptJS ++= WebpackAssets.ofScalaJSProjects(fastOptJS) { build => (build / "styles").allPaths }.value,
+    webpackAssets in fullOptJS ++= WebpackAssets.ofScalaJSProjects(fullOptJS) { build => (build / "styles").allPaths }.value
   )

@@ -1,14 +1,14 @@
 package scommons.sbtplugin.project
 
-import org.scalajs.sbtplugin.ScalaJSPlugin.autoImport._
+import org.portablescala.sbtplatformdeps.PlatformDepsPlugin.autoImport._
 import sbt._
 
 trait CommonLibs {
 
-  val akkaVersion = "2.5.6"
-  val playVer = "2.6.7" // should be the same as Play sbt-plugin version (see build.sbt)
-  val playJsonVer = "2.6.7"
-  val playWsVer = "1.1.3"
+  val akkaVersion = "2.5.19"
+  val playVer = "2.6.21" // should be the same as Play sbt-plugin version (see build.sbt)
+  val playJsonVer = "2.6.12"
+  val playWsVer = "2.0.1"
 
   //////////////////////////////////////////////////////////////////////////////
   // jvm dependencies
@@ -25,7 +25,7 @@ trait CommonLibs {
 
   lazy val swaggerPlay = Def.setting("io.swagger" %% "swagger-play2" % "1.6.0")
   lazy val swaggerAnnotations = Def.setting("io.swagger" % "swagger-annotations" % "1.5.16")
-  lazy val swaggerUi = Def.setting("org.webjars" % "swagger-ui" % "2.2.2")
+  lazy val swaggerUi = Def.setting("org.webjars" % "swagger-ui" % "2.2.6")
 
   //////////////////////////////////////////////////////////////////////////////
   // js dependencies

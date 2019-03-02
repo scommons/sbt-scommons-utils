@@ -2,7 +2,7 @@ package scommons.sbtplugin
 
 import com.typesafe.sbt.web.PathMapping
 import sbt.Def._
-import sbt.{Def, _}
+import sbt._
 import webscalajs.WebScalaJS.autoImport._
 
 import scalajsbundler.sbtplugin.ScalaJSBundlerPlugin.autoImport._
@@ -16,7 +16,7 @@ object WebpackAssets {
     (webpack in (project, Compile, sjsStage in project)).value
 
     val webpackBuildDir = (npmUpdate in (project, Compile)).value
-    assets(webpackBuildDir).pair(relativeTo(webpackBuildDir))
+    assets(webpackBuildDir).pair(Path.relativeTo(webpackBuildDir))
   }
 
   def ofScalaJSProjects(sjsStage: TaskKey[Attributed[File]])
@@ -32,7 +32,7 @@ object WebpackAssets {
       
       Def.task {
         webpackBuildDirs.flatMap { webpackBuildDir =>
-          assets(webpackBuildDir).pair(relativeTo(webpackBuildDir))
+          assets(webpackBuildDir).pair(Path.relativeTo(webpackBuildDir))
         }
       }
     }

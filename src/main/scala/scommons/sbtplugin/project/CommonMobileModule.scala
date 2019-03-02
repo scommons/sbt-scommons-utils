@@ -1,5 +1,6 @@
 package scommons.sbtplugin.project
 
+import org.portablescala.sbtplatformdeps.PlatformDepsPlugin.autoImport._
 import org.scalajs.sbtplugin.ScalaJSPlugin
 import org.scalajs.sbtplugin.ScalaJSPlugin.autoImport._
 import sbt.Keys._
@@ -57,7 +58,7 @@ object CommonMobileModule {
     // react-native DO NOT require DOM, but we enable it here only to trigger the webpack build
     // since we substitute references to react-native module with our custom react-native-mocks module
     // inside the sc-react-native-mocks.webpack.config.js
-    requiresDOM in Test := true,
+    requireJsDomEnv in Test := true,
 
     version in webpack := "3.5.5",
     
