@@ -5,6 +5,7 @@ import org.scalajs.sbtplugin.ScalaJSPlugin
 import org.scalajs.sbtplugin.ScalaJSPlugin.autoImport._
 import sbt.Keys._
 import sbt._
+import scommons.sbtplugin.ScommonsPlugin.autoImport._
 import scommons.sbtplugin.project.CommonModule.ideExcludedDirectories
 
 import scalajsbundler.sbtplugin.ScalaJSBundlerPlugin
@@ -50,6 +51,11 @@ trait CommonMobileModule extends CommonModule {
 object CommonMobileModule {
 
   val settings: Seq[Setting[_]] = Seq(
+
+    scommonsResourcesArtifacts := Seq(
+      "org.scommons.react-native" % "scommons-react-native-test" % "*"
+    ),
+
     scalaJSModuleKind := ModuleKind.CommonJSModule,
     
     //Opt-in @ScalaJSDefined by default

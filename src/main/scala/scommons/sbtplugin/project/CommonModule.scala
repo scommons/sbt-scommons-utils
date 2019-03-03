@@ -33,9 +33,11 @@ object CommonModule {
   val settings: Seq[Setting[_]] = Seq(
     scalaVersion := "2.12.8",
     scalacOptions ++= Seq(
+      //see https://docs.scala-lang.org/overviews/compiler-options/index.html#Warning_Settings
       //"-Xcheckinit",
       "-Xfatal-warnings",
       "-Xlint:_",
+      "-Ywarn-macros:after", // Only inspect expanded trees when generating unused symbol warnings
       "-explaintypes",
       "-unchecked",
       "-deprecation",
