@@ -26,7 +26,8 @@ object ScommonsPlugin extends AutoPlugin {
 
   override lazy val projectSettings = Seq(
     scommonsResourcesFileFilter :=
-      "*.css" ||
+      "*.js" ||
+        "*.css" ||
         "*.ico" ||
         "*.png" ||
         "*.jpg" ||
@@ -39,7 +40,18 @@ object ScommonsPlugin extends AutoPlugin {
     sjsStageSettings(fastOptJS, Compile),
     sjsStageSettings(fullOptJS, Compile),
     sjsStageSettings(fastOptJS, Test),
-    sjsStageSettings(fullOptJS, Test)
+    sjsStageSettings(fullOptJS, Test),
+
+    // revert the change for clean task: https://github.com/sbt/sbt/pull/3834/files#r172686677
+    // to keep the logic for cleanKeepFiles and avoid the error:
+    //   cleanKeepFiles contains directory/file that are not directly under cleanFiles
+    clean := doClean(Seq(managedDirectory.value, target.value), cleanKeepFiles.value),
+
+    cleanKeepFiles ++= Seq(
+      target.value / "scala-2.12" / "scalajs-bundler" / "main" / "node_modules",
+      target.value / "scala-2.12" / "scalajs-bundler" / "test" / "node_modules",
+      target.value / "scalajs-bundler-jsdom" / "node_modules"
+    )
   )
 
   private def sjsStageSettings(sjsStage: TaskKey[Attributed[File]], config: ConfigKey) = {
@@ -63,4 +75,14 @@ object ScommonsPlugin extends AutoPlugin {
 
     ResourcesUtils.extractFromClasspath(msg => log.info(msg), webpackDir, cp, fileFilter, includeArtifacts)
   }
+
+  private def doClean(clean: Seq[File], preserve: Seq[File]): Unit =
+    IO.withTemporaryDirectory { temp =>
+      val (dirs, files) = preserve.filter(_.exists).flatMap(_.allPaths.get).partition(_.isDirectory)
+      val mappings = files.zipWithIndex map { case (f, i) => (f, new File(temp, i.toHexString)) }
+      IO.move(mappings)
+      IO.delete(clean)
+      IO.createDirectories(dirs) // recreate empty directories
+      IO.move(mappings.map(_.swap))
+    }
 }

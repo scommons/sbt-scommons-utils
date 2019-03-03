@@ -85,11 +85,6 @@ object CommonClientModule {
         base / "build",
         base / "node_modules"
       )
-    },
-    cleanKeepFiles ++= Seq(
-      target.value / "scala-2.12" / "scalajs-bundler" / "main" / "node_modules",
-      target.value / "scala-2.12" / "scalajs-bundler" / "test" / "node_modules",
-      target.value / "scalajs-bundler-jsdom" / "node_modules"
-    )
+    }
   )
 }
