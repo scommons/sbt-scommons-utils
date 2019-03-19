@@ -42,6 +42,9 @@ trait CommonClientModule extends CommonModule {
   override def superRepoProjectsDependencies: Seq[(String, String, Option[String])] = Seq(
     ("scommons-client", "scommons-client-ui", None),
     ("scommons-react", "scommons-react-core", None),
+    ("scommons-react", "scommons-react-dom", None),
+    
+    ("scommons-react", "scommons-react-test", Some("test")),
     ("scommons-react", "scommons-react-test-dom", Some("test"))
   )
 
@@ -66,17 +69,17 @@ object CommonClientModule {
     emitSourceMaps := false,
 
     npmDependencies in Compile ++= Seq(
-      "react" -> "^16.6.3",
-      "react-dom" -> "^16.6.3"
+      "react" -> "^16.8.0",
+      "react-dom" -> "^16.8.0"
     ),
     npmResolutions in Compile ++= Map(
-      "react" -> "^16.6.3",
-      "react-dom" -> "^16.6.3"
+      "react" -> "^16.8.0",
+      "react-dom" -> "^16.8.0"
     ),
     
     npmResolutions in Test ++= Map(
-      "react" -> "^16.6.3",
-      "react-dom" -> "^16.6.3"
+      "react" -> "^16.8.0",
+      "react-dom" -> "^16.8.0"
     ),
 
     ideExcludedDirectories ++= {

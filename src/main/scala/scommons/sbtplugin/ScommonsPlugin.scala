@@ -34,6 +34,7 @@ object ScommonsPlugin extends AutoPlugin {
         "*.jpeg" ||
         "*.gif",
     scommonsResourcesArtifacts := Seq(
+      "org.scommons.react" % "scommons-react-core" % "*",
       "org.scommons.client" % "scommons-client-ui" % "*"
     ),
 

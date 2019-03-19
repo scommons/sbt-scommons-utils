@@ -53,6 +53,7 @@ object CommonMobileModule {
   val settings: Seq[Setting[_]] = Seq(
 
     scommonsResourcesArtifacts := Seq(
+      "org.scommons.react" % "scommons-react-core" % "*",
       "org.scommons.react-native" % "scommons-react-native-test" % "*"
     ),
 
@@ -71,23 +72,26 @@ object CommonMobileModule {
     emitSourceMaps := false,
 
     npmDependencies in Compile ++= Seq(
-      "react" -> "^16.6.3",
-      "react-dom" -> "^16.6.3" //TODO: remove dependency on react-dom
+      "react" -> "^16.8.0",
+      "react-dom" -> "^16.8.0" //TODO: remove dependency on react-dom
     ),
     npmResolutions in Compile ++= Map(
-      "react" -> "^16.6.3",
-      "react-dom" -> "^16.6.3"
+      "react" -> "^16.8.0",
+      "react-dom" -> "^16.8.0"
     ),
 
     npmResolutions in Test ++= Map(
-      "react" -> "^16.6.3",
-      "react-dom" -> "^16.6.3"
+      "react" -> "^16.8.0",
+      "react-dom" -> "^16.8.0"
     ),
 
     ideExcludedDirectories ++= {
       val base = baseDirectory.value
       List(
         base / "build",
+        base / "android" / "build",
+        base / "ios" / "build",
+        base / ".expo",
         base / "node_modules"
       )
     }
