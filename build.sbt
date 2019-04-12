@@ -73,6 +73,7 @@ lazy val `sbt-scommons-plugin` = (project in file("."))
     //
     // publish/release related settings:
     //
+    sonatypeProfileName := "org.scommons",
     publishMavenStyle := true,
     publishArtifact in Test := false,
     publishTo := {
