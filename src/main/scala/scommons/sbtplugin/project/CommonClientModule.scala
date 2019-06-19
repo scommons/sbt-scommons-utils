@@ -43,6 +43,7 @@ trait CommonClientModule extends CommonModule {
     ("scommons-client", "scommons-client-ui", None),
     ("scommons-react", "scommons-react-core", None),
     ("scommons-react", "scommons-react-dom", None),
+    ("scommons-react", "scommons-react-redux", None),
     
     ("scommons-react", "scommons-react-test", Some("test")),
     ("scommons-react", "scommons-react-test-dom", Some("test"))
