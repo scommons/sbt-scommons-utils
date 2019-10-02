@@ -34,6 +34,8 @@ trait CommonPlayModule extends CommonModule {
         pipelineStages in Assets := Seq(scalaJSPipeline),
         pipelineStages := Seq(digest, gzip),
 
+        devCommands in scalaJSPipeline ++= Seq("test", "testOnly"),
+
         // Expose as sbt-web assets some webpack build files of the scalajs projects
         //
         webpackAssets in fastOptJS ++= WebpackAssets.ofScalaJSProjects(fastOptJS) { build => (build / "styles").allPaths }.value,
