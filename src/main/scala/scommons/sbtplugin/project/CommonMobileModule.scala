@@ -91,6 +91,7 @@ object CommonMobileModule {
         base / "build",
         base / "android" / "build",
         base / "ios" / "build",
+        base / "ios" / "Pods",
         base / ".expo",
         base / "node_modules"
       )
