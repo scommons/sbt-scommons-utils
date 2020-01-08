@@ -8,6 +8,7 @@ import sbt._
 import scommons.sbtplugin.ScommonsPlugin.autoImport._
 import scommons.sbtplugin.project.CommonModule.ideExcludedDirectories
 
+import scalajsbundler.ExternalCommand
 import scalajsbundler.sbtplugin.ScalaJSBundlerPlugin
 import scalajsbundler.sbtplugin.ScalaJSBundlerPlugin.autoImport._
 
@@ -66,6 +67,27 @@ object CommonMobileModule {
     // since we substitute references to react-native module with our custom react-native-mocks module
     // inside the sc-react-native-mocks.webpack.config.js
     requireJsDomEnv in Test := true,
+    installJsdom := {
+      val jsdomVersion = (version in installJsdom).value
+
+      val installDir = target.value / "scalajs-bundler-jsdom"
+      val baseDir = baseDirectory.value
+      val jsdomDir = installDir / "node_modules" / "jsdom"
+      val log = streams.value.log
+      if (!jsdomDir.exists()) {
+        log.info(s"Installing jsdom into: ${installDir.absolutePath}")
+        IO.createDirectory(installDir / "node_modules")
+        ExternalCommand.addPackages(
+          baseDir,
+          installDir,
+          useYarn.value,
+          log,
+          npmExtraArgs.value,
+          yarnExtraArgs.value
+        )(s"jsdom@$jsdomVersion")
+      }
+      installDir
+    },
 
     version in webpack := "3.5.5",
     
