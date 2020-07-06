@@ -1,18 +1,22 @@
-# check if resource files were copied and extracted in Compile
+# check if resource/bundle files were copied/extracted/generated in Compile
 > fullOptJS
 $ absent client/target/scala-2.12/scalajs-bundler/main/scommons/sbtplugin/test/test.jpeg
 $ exists client/target/scala-2.12/scalajs-bundler/main/scommons/sbtplugin/test/test.png
 $ exists client/target/scala-2.12/scalajs-bundler/main/scommons/sbtplugin/test/test.css
+$ exists client/target/scala-2.12/scalajs-bundler/main/scommons/sbtplugin/test/bundle.json
 $ exists client/target/scala-2.12/scalajs-bundler/main/scommons/sbtplugin/test/nested/test.css
+$ exists client/target/scala-2.12/scalajs-bundler/main/scommons/sbtplugin/test/nested/bundle.json
 $ exists client/target/scala-2.12/scalajs-bundler/main/com/googlecode/common/client/ui/icons/dialog-error.png
 $ exists client/target/scala-2.12/scalajs-bundler/main/com/googlecode/common/client/ui/TablePanel.css
 
-# check if resource files were copied and extracted in Test
+# check if resource/bundle files were copied/extracted/generated in Test
 > test:fastOptJS
 $ absent client/target/scala-2.12/scalajs-bundler/test/scommons/sbtplugin/test/test.jpeg
 $ exists client/target/scala-2.12/scalajs-bundler/test/scommons/sbtplugin/test/test.png
 $ exists client/target/scala-2.12/scalajs-bundler/test/scommons/sbtplugin/test/test.css
+$ exists client/target/scala-2.12/scalajs-bundler/test/scommons/sbtplugin/test/bundle.json
 $ exists client/target/scala-2.12/scalajs-bundler/test/scommons/sbtplugin/test/nested/test.css
+$ exists client/target/scala-2.12/scalajs-bundler/test/scommons/sbtplugin/test/nested/bundle.json
 $ exists client/target/scala-2.12/scalajs-bundler/test/com/googlecode/common/client/ui/icons/dialog-error.png
 $ exists client/target/scala-2.12/scalajs-bundler/test/com/googlecode/common/client/ui/TablePanel.css
 

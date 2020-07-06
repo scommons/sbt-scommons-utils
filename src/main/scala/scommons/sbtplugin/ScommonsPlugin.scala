@@ -3,7 +3,7 @@ package scommons.sbtplugin
 import org.scalajs.sbtplugin.ScalaJSPlugin.autoImport._
 import sbt.Keys._
 import sbt._
-import scommons.sbtplugin.util.ResourcesUtils
+import scommons.sbtplugin.util.{BundlesUtils, ResourcesUtils}
 
 import scalajsbundler.sbtplugin.ScalaJSBundlerPlugin
 
@@ -20,23 +20,40 @@ object ScommonsPlugin extends AutoPlugin {
     val scommonsResourcesArtifacts: SettingKey[Seq[ModuleID]] = settingKey[Seq[ModuleID]](
       "List of artifacts (JARs) with resources, that should be automatically extracted to the webpack directory"
     )
+    
+    val scommonsBundlesFileFilter: SettingKey[FileFilter] = settingKey[FileFilter](
+      "File filter of bundles files, that should be automatically generated in the webpack directory"
+    )
   }
 
   import autoImport._
 
   override lazy val projectSettings = Seq(
+    
     scommonsResourcesFileFilter :=
       "*.js" ||
+        "*.json" ||
         "*.css" ||
         "*.ico" ||
         "*.png" ||
         "*.jpg" ||
         "*.jpeg" ||
-        "*.gif",
+        "*.gif" ||
+        "*.svg" ||
+        "*.ttf" ||
+        "*.mp3" ||
+        "*.wav" ||
+        "*.mp4" ||
+        "*.mov" ||
+        "*.html" ||
+        "*.pdf",
+    
     scommonsResourcesArtifacts := Seq(
       "org.scommons.react" % "scommons-react-core" % "*",
       "org.scommons.client" % "scommons-client-ui" % "*"
     ),
+
+    scommonsBundlesFileFilter := NothingFilter,
 
     sjsStageSettings(fastOptJS, Compile),
     sjsStageSettings(fullOptJS, Compile),
@@ -64,6 +81,12 @@ object ScommonsPlugin extends AutoPlugin {
         scommonsResourcesFileFilter.value,
         scommonsResourcesArtifacts.value
       )
+      genWebpackBundles(
+        streams.value.log,
+        (crossTarget in (config, sjsStage)).value,
+        (fullClasspath in config).value,
+        scommonsBundlesFileFilter.value
+      )
       (sjsStage in config).value
     }
   }
@@ -75,6 +98,16 @@ object ScommonsPlugin extends AutoPlugin {
                                    includeArtifacts: Seq[ModuleID]): Unit = {
 
     ResourcesUtils.extractFromClasspath(msg => log.info(msg), webpackDir, cp, fileFilter, includeArtifacts)
+  }
+
+  private def genWebpackBundles(log: Logger,
+                                webpackDir: File,
+                                cp: Seq[Attributed[File]],
+                                fileFilter: FileFilter): Unit = {
+
+    if (fileFilter != NothingFilter) {
+      BundlesUtils.genFromClasspath(msg => log.info(msg), webpackDir, cp, fileFilter)
+    }
   }
 
   private def doClean(clean: Seq[File], preserve: Seq[File]): Unit =

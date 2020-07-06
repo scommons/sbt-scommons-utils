@@ -27,25 +27,41 @@ It provides the following settings:
 val scommonsResourcesFileFilter: SettingKey[FileFilter] = settingKey[FileFilter](
   "File filter of resources files, that should be automatically copied/extracted to the webpack directory"
 )
-
 val scommonsResourcesArtifacts: SettingKey[Seq[ModuleID]] = settingKey[Seq[ModuleID]](
   "List of artifacts (JARs) with resources, that should be automatically extracted to the webpack directory"
+)
+
+val scommonsBundlesFileFilter: SettingKey[FileFilter] = settingKey[FileFilter](
+  "File filter of bundles files, that should be automatically generated in the webpack directory"
 )
 ```
 
 With default values:
 ```scala
 scommonsResourcesFileFilter :=
-  "*.css" ||
+  "*.js" ||
+    "*.json" ||
+    "*.css" ||
     "*.ico" ||
     "*.png" ||
     "*.jpg" ||
     "*.jpeg" ||
-    "*.gif"
+    "*.gif" ||
+    "*.svg" ||
+    "*.ttf" ||
+    "*.mp3" ||
+    "*.wav" ||
+    "*.mp4" ||
+    "*.mov" ||
+    "*.html" ||
+    "*.pdf"
 
 scommonsResourcesArtifacts := Seq(
+  "org.scommons.react" % "scommons-react-core" % "*",
   "org.scommons.client" % "scommons-client-ui" % "*"
 )
+
+scommonsBundlesFileFilter := NothingFilter
 ```
 
 You can extend/override the default values:
@@ -56,7 +72,11 @@ settings(
 
     scommonsResourcesArtifacts ++= Seq(
       "your.org" % "your-dependency" % "*"
-    )
+    ),
+    
+    // will generate bundle.json file(s) with migrations for SQLite
+    // see `scommons-websql-migrations` module
+    scommonsBundlesFileFilter := "*.sql"
 )
 ```
 

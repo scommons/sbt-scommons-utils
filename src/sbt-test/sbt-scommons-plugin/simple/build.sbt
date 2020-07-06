@@ -22,6 +22,7 @@ lazy val client = (project in file("client"))
     scommonsResourcesArtifacts ++= Seq(
       "com.googlecode.web-commons" % "web-common-client" % "*"
     ),
+    scommonsBundlesFileFilter := "*.sql",
 
     //scala.js specific settings
     //scalaJSModuleKind := ModuleKind.CommonJSModule,
