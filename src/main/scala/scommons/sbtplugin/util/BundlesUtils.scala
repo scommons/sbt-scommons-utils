@@ -41,15 +41,19 @@ object BundlesUtils {
             bundle.setLastModified(lastModified)
           }
         }
+        
+        def print(xs: Seq[File]): String = {
+          xs.map(_.toString).sorted.mkString("\n\t")
+        }
 
         val total = bundles.size
         if (generated.nonEmpty) {
           logger(s"Generated ${generated.size} bundle files (out of $total)" +
-            s"\n\t${generated.mkString("\n\t")}")
+            s"\n\t${print(generated)}")
         }
         else if (total > 0) {
           logger(s"Nothing to generate, all $total bundle files are up to date" +
-            s"\n\t${bundles.keys.map(new File(_, "bundle.json")).mkString("\n\t")}")
+            s"\n\t${print(bundles.keys.map(new File(_, "bundle.json")).toSeq)}")
         }
       }
     }
