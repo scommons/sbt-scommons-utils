@@ -30,7 +30,7 @@ object BundlesUtils {
           if (!bundle.exists() || bundle.lastModified() < lastModified) {
             generated = generated :+ bundle
             
-            val content = bundleFiles.map { file =>
+            val content = bundleFiles.sortBy(_.getName).map { file =>
               Json.obj(
                 "file" -> file.getName,
                 "content" -> IO.read(file)
