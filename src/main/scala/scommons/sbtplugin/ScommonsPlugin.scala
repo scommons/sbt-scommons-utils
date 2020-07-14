@@ -24,6 +24,10 @@ object ScommonsPlugin extends AutoPlugin {
     val scommonsBundlesFileFilter: SettingKey[FileFilter] = settingKey[FileFilter](
       "File filter of bundles files, that should be automatically generated in the webpack directory"
     )
+    
+    val scommonsNodeJsTestLibs: SettingKey[Seq[String]] = settingKey[Seq[String]](
+      "List of JavaScript files, that should be pre-pended to the test fastOptJS output, useful for module mocks"
+    )
   }
 
   import autoImport._
@@ -55,10 +59,33 @@ object ScommonsPlugin extends AutoPlugin {
 
     scommonsBundlesFileFilter := NothingFilter,
 
+    scommonsNodeJsTestLibs := Nil,
+    
     sjsStageSettings(fastOptJS, Compile),
     sjsStageSettings(fullOptJS, Compile),
     sjsStageSettings(fastOptJS, Test),
     sjsStageSettings(fullOptJS, Test),
+
+    fastOptJS in Test := {
+      val logger = streams.value.log
+      val testLibs = scommonsNodeJsTestLibs.value
+      val sjsOutput = (fastOptJS in Test).value
+      if (testLibs.nonEmpty) {
+        val sjsOutputName = sjsOutput.data.name.stripSuffix(".js")
+        val targetDir = sjsOutput.data.getParentFile
+        val bundle = new File(targetDir, s"$sjsOutputName-bundle.js")
+
+        logger.info(s"Writing NodeJs test bundle\n\t$bundle")
+        IO.delete(bundle)
+        testLibs.foreach { jsFile =>
+          IO.write(bundle, IO.read(new File(targetDir, jsFile)), append = true)
+        }
+        IO.write(bundle, IO.read(sjsOutput.data), append = true)
+
+        Attributed(bundle)(sjsOutput.metadata)
+      }
+      else sjsOutput
+    },
 
     // revert the change for clean task: https://github.com/sbt/sbt/pull/3834/files#r172686677
     // to keep the logic for cleanKeepFiles and avoid the error:

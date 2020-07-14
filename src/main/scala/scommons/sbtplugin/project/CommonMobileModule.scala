@@ -8,7 +8,6 @@ import sbt._
 import scommons.sbtplugin.ScommonsPlugin.autoImport._
 import scommons.sbtplugin.project.CommonModule.ideExcludedDirectories
 
-import scalajsbundler.ExternalCommand
 import scalajsbundler.sbtplugin.ScalaJSBundlerPlugin
 import scalajsbundler.sbtplugin.ScalaJSBundlerPlugin.autoImport._
 
@@ -21,12 +20,8 @@ trait CommonMobileModule extends CommonModule {
       .enablePlugins(ScalaJSPlugin, ScalaJSBundlerPlugin)
       .settings(CommonMobileModule.settings: _*)
       .settings(
-        scalaJSUseMainModuleInitializer := false,
-        webpackBundlingMode := BundlingMode.LibraryOnly(),
-
-        webpackConfigFile in Test := Some(
-          baseDirectory.value / "src" / "test" / "resources" / "test.webpack.config.js"
-        )
+        // we substitute references to react-native modules with our custom mocks during test
+        scommonsNodeJsTestLibs := Seq("scommons.reactnative.aliases.js")
       )
   }
 
@@ -59,35 +54,14 @@ object CommonMobileModule {
     ),
 
     scalaJSModuleKind := ModuleKind.CommonJSModule,
+    scalaJSUseMainModuleInitializer := false,
+    webpackBundlingMode := BundlingMode.LibraryOnly(),
     
     //Opt-in @ScalaJSDefined by default
     scalacOptions += "-P:scalajs:sjsDefinedByDefault",
     
-    // react-native DO NOT require DOM, but we enable it here only to trigger the webpack build
-    // since we substitute references to react-native module with our custom react-native-mocks module
-    // inside the sc-react-native-mocks.webpack.config.js
-    requireJsDomEnv in Test := true,
-    installJsdom := {
-      val jsdomVersion = (version in installJsdom).value
-
-      val installDir = target.value / "scalajs-bundler-jsdom"
-      val baseDir = baseDirectory.value
-      val jsdomDir = installDir / "node_modules" / "jsdom"
-      val log = streams.value.log
-      if (!jsdomDir.exists()) {
-        log.info(s"Installing jsdom into: ${installDir.absolutePath}")
-        IO.createDirectory(installDir / "node_modules")
-        ExternalCommand.addPackages(
-          baseDir,
-          installDir,
-          useYarn.value,
-          log,
-          npmExtraArgs.value,
-          yarnExtraArgs.value
-        )(s"jsdom@$jsdomVersion")
-      }
-      installDir
-    },
+    // react-native DO NOT require DOM
+    requireJsDomEnv in Test := false,
 
     version in webpack := "3.5.5",
     
@@ -105,6 +79,9 @@ object CommonMobileModule {
     npmResolutions in Test ++= Map(
       "react" -> "^16.8.0",
       "react-dom" -> "^16.8.0"
+    ),
+    npmDevDependencies in Test ++= Seq(
+      "module-alias" -> "2.2.2"
     ),
 
     ideExcludedDirectories ++= {

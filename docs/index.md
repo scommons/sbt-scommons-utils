@@ -34,6 +34,10 @@ val scommonsResourcesArtifacts: SettingKey[Seq[ModuleID]] = settingKey[Seq[Modul
 val scommonsBundlesFileFilter: SettingKey[FileFilter] = settingKey[FileFilter](
   "File filter of bundles files, that should be automatically generated in the webpack directory"
 )
+
+val scommonsNodeJsTestLibs: SettingKey[Seq[String]] = settingKey[Seq[String]](
+  "List of JavaScript files, that should be pre-pended to the test fastOptJS output, useful for module mocks"
+)
 ```
 
 With default values:
@@ -54,14 +58,16 @@ scommonsResourcesFileFilter :=
     "*.mp4" ||
     "*.mov" ||
     "*.html" ||
-    "*.pdf"
+    "*.pdf",
 
 scommonsResourcesArtifacts := Seq(
   "org.scommons.react" % "scommons-react-core" % "*",
   "org.scommons.client" % "scommons-client-ui" % "*"
-)
+),
 
-scommonsBundlesFileFilter := NothingFilter
+scommonsBundlesFileFilter := NothingFilter,
+
+scommonsNodeJsTestLibs := Nil
 ```
 
 You can extend/override the default values:
@@ -76,7 +82,11 @@ settings(
     
     // will generate bundle.json file(s) with migrations for SQLite
     // see `scommons-websql-migrations` module
-    scommonsBundlesFileFilter := "*.sql"
+    scommonsBundlesFileFilter := "*.sql",
+    
+    // to substitute references to react-native modules
+    // with our custom mocks during test
+    scommonsNodeJsTestLibs := Seq("scommons.reactnative.aliases.js")
 )
 ```
 
