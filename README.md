@@ -1,5 +1,5 @@
 
-[![Build Status](https://travis-ci.org/scommons/sbt-scommons-plugin.svg?branch=master)](https://travis-ci.org/scommons/sbt-scommons-plugin)
+[![Build Status](https://travis-ci.com/scommons/sbt-scommons-plugin.svg?branch=master)](https://travis-ci.com/scommons/sbt-scommons-plugin)
 [![Coverage Status](https://coveralls.io/repos/github/scommons/sbt-scommons-plugin/badge.svg?branch=master)](https://coveralls.io/github/scommons/sbt-scommons-plugin?branch=master)
 [![scala-index](https://index.scala-lang.org/scommons/sbt-scommons-plugin/sbt-scommons-plugin/latest.svg)](https://index.scala-lang.org/scommons/sbt-scommons-plugin/sbt-scommons-plugin)
 [![Scala.js](https://www.scala-js.org/assets/badges/scalajs-0.6.17.svg)](https://www.scala-js.org)
