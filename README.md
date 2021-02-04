@@ -12,22 +12,9 @@ Sbt auto-plugins with common tasks/utils for Scala Commons modules
 ```scala
 // inside plugins.sbt
 
-addSbtPlugin("org.scommons.sbt" % "sbt-scommons-plugin" % "1.0.0-SNAPSHOT")
-```
-
-Latest `SNAPSHOT` version is published to [Sonatype Repo](https://oss.sonatype.org/content/repositories/snapshots/org/scommons/), just make sure you added
-the proper dependency resolver to your `build.sbt` settings:
-```scala
-resolvers += "Sonatype Snapshots" at "https://oss.sonatype.org/content/repositories/snapshots/"
-```
-
-### How to Build
-
-To build and run all the tests use the following command:
-```bash
-sbt clean test publishM2 scripted
+addSbtPlugin("org.scommons.sbt" % "sbt-scommons-plugin" % [version])
 ```
 
 ## Documentation
 
-You can find documentation [here](https://scommons.org/sbt-scommons-plugin)
+You can find all documentation [here](https://scommons.org/sbt-scommons-plugin)
