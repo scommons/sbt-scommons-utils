@@ -38,6 +38,10 @@ val scommonsBundlesFileFilter: SettingKey[FileFilter] = settingKey[FileFilter](
 val scommonsNodeJsTestLibs: SettingKey[Seq[String]] = settingKey[Seq[String]](
   "List of JavaScript files, that should be pre-pended to the test fastOptJS output, useful for module mocks"
 )
+
+val scommonsRequireWebpackInTest: SettingKey[Boolean] = settingKey[Boolean](
+  "Whether webpack command should be executed during tests, use webpackConfigFile for custom configuration"
+)
 ```
 
 With default values:
@@ -68,6 +72,10 @@ scommonsResourcesArtifacts := Seq(
 scommonsBundlesFileFilter := NothingFilter,
 
 scommonsNodeJsTestLibs := Nil
+
+scommonsRequireWebpackInTest := false,
+
+version in webpack := "4.29.0"
 ```
 
 You can extend/override the default values:
@@ -86,7 +94,12 @@ settings(
     
     // to substitute references to react-native modules
     // with our custom mocks during test
-    scommonsNodeJsTestLibs := Seq("scommons.reactnative.aliases.js")
+    scommonsNodeJsTestLibs := Seq("scommons.reactnative.aliases.js"),
+
+    // to execute webpack during tests
+    // (to perform css styles transformations as in main, for example)
+    scommonsRequireWebpackInTest := true,
+    webpackConfigFile in Test := Some(baseDirectory.value / "test.webpack.config.js"),
 )
 ```
 

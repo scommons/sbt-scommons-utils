@@ -5,7 +5,9 @@ import sbt.Keys._
 import sbt._
 import scommons.sbtplugin.util.{BundlesUtils, ResourcesUtils}
 
+import scalajsbundler.Webpack
 import scalajsbundler.sbtplugin.ScalaJSBundlerPlugin
+import scalajsbundler.sbtplugin.ScalaJSBundlerPlugin.autoImport._
 
 object ScommonsPlugin extends AutoPlugin {
 
@@ -27,6 +29,10 @@ object ScommonsPlugin extends AutoPlugin {
     
     val scommonsNodeJsTestLibs: SettingKey[Seq[String]] = settingKey[Seq[String]](
       "List of JavaScript files, that should be pre-pended to the test fastOptJS output, useful for module mocks"
+    )
+
+    val scommonsRequireWebpackInTest: SettingKey[Boolean] = settingKey[Boolean](
+      "Whether webpack command should be executed during tests, use webpackConfigFile for custom configuration"
     )
   }
 
@@ -60,6 +66,8 @@ object ScommonsPlugin extends AutoPlugin {
     scommonsBundlesFileFilter := NothingFilter,
 
     scommonsNodeJsTestLibs := Nil,
+
+    scommonsRequireWebpackInTest := false,
     
     sjsStageSettings(fastOptJS, Compile),
     sjsStageSettings(fullOptJS, Compile),
@@ -70,21 +78,43 @@ object ScommonsPlugin extends AutoPlugin {
       val logger = streams.value.log
       val testLibs = scommonsNodeJsTestLibs.value
       val sjsOutput = (fastOptJS in Test).value
-      if (testLibs.nonEmpty) {
-        val sjsOutputName = sjsOutput.data.name.stripSuffix(".js")
-        val targetDir = sjsOutput.data.getParentFile
-        val bundle = new File(targetDir, s"$sjsOutputName-bundle.js")
-
-        logger.info(s"Writing NodeJs test bundle\n\t$bundle")
-        IO.delete(bundle)
-        testLibs.foreach { jsFile =>
-          IO.write(bundle, IO.read(new File(targetDir, jsFile)), append = true)
+      val targetDir = sjsOutput.data.getParentFile
+      val bundleOutput =
+        if (testLibs.nonEmpty) {
+          val sjsOutputName = sjsOutput.data.name.stripSuffix(".js")
+          val bundle = new File(targetDir, s"$sjsOutputName-bundle.js")
+  
+          logger.info(s"Writing NodeJs test bundle\n\t$bundle")
+          IO.delete(bundle)
+          testLibs.foreach { jsFile =>
+            IO.write(bundle, IO.read(new File(targetDir, jsFile)), append = true)
+          }
+          IO.write(bundle, IO.read(sjsOutput.data), append = true)
+  
+          Attributed(bundle)(sjsOutput.metadata)
         }
-        IO.write(bundle, IO.read(sjsOutput.data), append = true)
+        else sjsOutput
 
-        Attributed(bundle)(sjsOutput.metadata)
+      if (scommonsRequireWebpackInTest.value) {
+        val customWebpackConfigFile = (webpackConfigFile in Test).value
+        val nodeArgs = (webpackNodeArgs in Test).value
+        val bundleName = bundleOutput.data.name.stripSuffix(".js")
+        val webpackOutput = targetDir / s"$bundleName-webpack-out.js"
+
+        logger.info("Executing webpack...")
+        val loader = bundleOutput.data
+
+        customWebpackConfigFile match {
+          case Some(configFile) =>
+            val customConfigFileCopy = Webpack.copyCustomWebpackConfigFiles(targetDir, webpackResources.value.get)(configFile)
+            Webpack.run(nodeArgs: _*)("--mode", "development", "--config", customConfigFileCopy.getAbsolutePath, loader.absolutePath, "--output", webpackOutput.absolutePath)(targetDir, logger)
+          case None =>
+            Webpack.run(nodeArgs: _*)("--mode", "development", loader.absolutePath, "--output", webpackOutput.absolutePath)(targetDir, logger)
+        }
+
+        Attributed(webpackOutput)(bundleOutput.metadata)
       }
-      else sjsOutput
+      else bundleOutput
     },
 
     // revert the change for clean task: https://github.com/sbt/sbt/pull/3834/files#r172686677

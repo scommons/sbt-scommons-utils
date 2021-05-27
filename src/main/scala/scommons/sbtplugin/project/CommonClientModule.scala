@@ -6,6 +6,7 @@ import org.scalajs.sbtplugin.ScalaJSPlugin
 import org.scalajs.sbtplugin.ScalaJSPlugin.autoImport._
 import sbt.Keys._
 import sbt._
+import scommons.sbtplugin.ScommonsPlugin.autoImport._
 import scommons.sbtplugin.project.CommonModule.ideExcludedDirectories
 import scoverage.ScoverageKeys._
 import webscalajs.ScalaJSWeb
@@ -15,6 +16,7 @@ import scalajsbundler.sbtplugin.ScalaJSBundlerPlugin.autoImport._
 
 trait CommonClientModule extends CommonModule {
 
+  def scommonsNodejsVersion: String
   def scommonsReactVersion: String
   def scommonsClientVersion: String
 
@@ -33,6 +35,7 @@ trait CommonClientModule extends CommonModule {
         //production
         webpackConfigFile in fullOptJS := Some(baseDirectory.value / "client.webpack.config.js"),
         //reload workflow and tests
+        scommonsRequireWebpackInTest := true,
         webpackConfigFile in Test := Some(baseDirectory.value / "test.webpack.config.js")
       )
   }
@@ -45,8 +48,8 @@ trait CommonClientModule extends CommonModule {
     ("scommons-react", "scommons-react-dom", None),
     ("scommons-react", "scommons-react-redux", None),
     
-    ("scommons-react", "scommons-react-test", Some("test")),
-    ("scommons-react", "scommons-react-test-dom", Some("test"))
+    ("scommons-nodejs", "scommons-nodejs-test", Some("test")),
+    ("scommons-react", "scommons-react-test", Some("test"))
   )
 
   override def runtimeDependencies: Def.Initialize[Seq[ModuleID]] = Def.setting(Seq(
@@ -54,7 +57,8 @@ trait CommonClientModule extends CommonModule {
   ))
 
   override def testDependencies: Def.Initialize[Seq[ModuleID]] = Def.setting(Seq(
-    "org.scommons.react" %%% "scommons-react-test-dom" % scommonsReactVersion
+    "org.scommons.nodejs" %%% "scommons-nodejs-test" % scommonsNodejsVersion,
+    "org.scommons.react" %%% "scommons-react-test" % scommonsReactVersion
   ).map(_  % "test"))
 }
 
@@ -65,8 +69,8 @@ object CommonClientModule {
     
     //Opt-in @ScalaJSDefined by default
     scalacOptions += "-P:scalajs:sjsDefinedByDefault",
-    requireJsDomEnv in Test := true,
-    version in webpack := "3.5.5",
+    requireJsDomEnv in Test := false,
+    version in webpack := "4.29.0",
     emitSourceMaps := false,
 
     npmDependencies in Compile ++= Seq(

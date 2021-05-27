@@ -28,18 +28,20 @@ lazy val client = (project in file("client"))
     //scalaJSModuleKind := ModuleKind.CommonJSModule,
     scalaJSUseMainModuleInitializer := true,
     //webpackBundlingMode := BundlingMode.LibraryOnly(),
-    version in webpack := "1.14.0", //TODO: migrate to default (latest version)
-    webpackConfigFile in fastOptJS := Some(baseDirectory.value / "test.webpack.config.js"),
-    webpackConfigFile in fullOptJS := Some(baseDirectory.value / "test.webpack.config.js"),
+    version in webpack := "4.29.0",
+    webpackConfigFile in fastOptJS := Some(baseDirectory.value / "client.webpack.config.js"),
+    webpackConfigFile in fullOptJS := Some(baseDirectory.value / "client.webpack.config.js"),
+    scommonsRequireWebpackInTest := true,
+    webpackConfigFile in Test := Some(baseDirectory.value / "test.webpack.config.js"),
+    
     emitSourceMaps := false,
 
     npmDevDependencies in Compile ++= Seq(
-      "css-loader" -> "0.23.1",
-      "extract-text-webpack-plugin" -> "1.0.1",
-      "resolve-url-loader" -> "2.0.2",
-      "url-loader" -> "0.5.8",
-      "file-loader" -> "0.11.2",
-      "style-loader" -> "0.13.1",
+      "css-loader" -> "2.1.1",
+      "mini-css-extract-plugin" -> "0.12.0",
+      "resolve-url-loader" -> "3.1.2",
+      "url-loader" -> "4.1.1",
+      "webpack-node-externals" -> "2.5.2",
       "webpack-merge" -> "4.1.0"
     )
   )

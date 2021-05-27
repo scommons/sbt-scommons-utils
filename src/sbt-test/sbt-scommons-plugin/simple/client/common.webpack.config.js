@@ -1,27 +1,55 @@
-//const path = require('path')
-const ExtractTextPlugin = require('extract-text-webpack-plugin')
+const MiniCssExtractPlugin = require('mini-css-extract-plugin')
 
 module.exports = {
+  stats: {
+    children: false // disable child plugin/loader logging
+  },
+  
   module: {
-    loaders: [{
-      loader: "url-loader",
+    rules: [{
       test: /\.(ico|png|gif|jpe?g|svg)$/i,
+      use: {
+        loader: 'url-loader',
+        options: {
+          esModule: false
+          //limit: 8192
+        }
+      },
       exclude: /node_modules/
     }, {
-      loader: ExtractTextPlugin.extract('style-loader', 'css-loader?modules&localIdentName=[local]__[hash:base64:5]&sourceMap!resolve-url-loader?sourceMap'),
       test: /\.css$/,
+      use: [{
+        loader: MiniCssExtractPlugin.loader,
+        options: {
+          esModule: false
+        }
+      }, {
+        loader: 'css-loader',
+        options: {
+          modules: true,
+          localIdentName: '[local]__[hash:base64:5]',
+          sourceMap: true
+        }
+      }, {
+        loader: 'resolve-url-loader',
+        options: {
+          sourceMap: true
+        },
+      }],
       exclude: /node_modules/
     }]
   },
 
   resolve: {
-    modulesDirectories: [
+    modules: [
       './node_modules',
       '.'
     ]
   },
 
   plugins: [
-    new ExtractTextPlugin('styles/styles.css')
+    new MiniCssExtractPlugin({
+      filename: 'styles/styles.css'
+    })
   ]
 }
