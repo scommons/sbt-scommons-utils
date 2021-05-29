@@ -62,10 +62,9 @@ object CommonMobileModule {
     
     // react-native DO NOT require DOM
     requireJsDomEnv in Test := false,
-
-    version in webpack := "3.5.5",
-    
+    version in webpack := "3.5.5", //TODO: migrate to 4.29.0
     emitSourceMaps := false,
+    webpackEmitSourceMaps := false,
 
     npmDependencies in Compile ++= Seq(
       "react" -> "^16.8.0",

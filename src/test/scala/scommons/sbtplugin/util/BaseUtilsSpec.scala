@@ -5,9 +5,11 @@ import java.util.zip.{ZipEntry, ZipOutputStream}
 
 import org.scalamock.scalatest.MockFactory
 import org.scalatest._
+import org.scalatest.flatspec.AnyFlatSpec
+import org.scalatest.matchers.should.Matchers
 import sbt._
 
-abstract class BaseUtilsSpec extends FlatSpec
+abstract class BaseUtilsSpec extends AnyFlatSpec
   with Matchers
   with BeforeAndAfterEach
   with MockFactory {

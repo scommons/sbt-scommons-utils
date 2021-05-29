@@ -30,7 +30,7 @@ trait CommonLibs {
   //////////////////////////////////////////////////////////////////////////////
   // js dependencies
 
-  lazy val scalajsDom = Def.setting("org.scala-js" %%% "scalajs-dom" % "0.9.2")
+  lazy val scalajsDom = Def.setting("org.scala-js" %%% "scalajs-dom" % "0.9.8")
 
   lazy val playJsonJs = Def.setting("com.typesafe.play" %%% "play-json" % playJsonVer)
 }

@@ -43,10 +43,10 @@ lazy val `sbt-scommons-plugin` = (project in file("."))
     coverageHighlighting := false,
     coverageExcludedPackages := ".*mecha.*;.*project.*",
 
-    addSbtPlugin("org.portable-scala" % "sbt-scalajs-crossproject" % "0.6.0"),
-    addSbtPlugin("org.scala-js" % "sbt-scalajs" % "0.6.26"),
-    addSbtPlugin("ch.epfl.scala" % "sbt-scalajs-bundler" % "0.14.0"),
-    addSbtPlugin("ch.epfl.scala" % "sbt-web-scalajs-bundler" % "0.14.0"),
+    addSbtPlugin("org.portable-scala" % "sbt-scalajs-crossproject" % "1.0.0"),
+    addSbtPlugin("org.scala-js" % "sbt-scalajs" % "0.6.31"),
+    addSbtPlugin("ch.epfl.scala" % "sbt-scalajs-bundler-sjs06" % "0.16.0"),
+    addSbtPlugin("ch.epfl.scala" % "sbt-web-scalajs-bundler-sjs06" % "0.16.0"),
 
     // when updating plugins versions here,
     // don't forget to set the same versions in `scommons.sbtplugin.project.CommonLibs` !!!
@@ -61,11 +61,11 @@ lazy val `sbt-scommons-plugin` = (project in file("."))
     addSbtPlugin("org.scoverage" % "sbt-coveralls" % "1.2.4"),
 
     addSbtPlugin("org.xerial.sbt" % "sbt-sonatype" % "3.9.5"),
-    addSbtPlugin("com.jsuereth" % "sbt-pgp" % "1.1.0"),
+    addSbtPlugin("com.jsuereth" % "sbt-pgp" % "2.0.1"),
 
     libraryDependencies ++= Seq(
-      "org.scalatest" %% "scalatest" % "3.0.1" % "test",
-      "org.scalamock" %% "scalamock-scalatest-support" % "3.6.0" % "test"
+      "org.scalatest" %% "scalatest" % "3.2.2" % "test",
+      "org.scalamock" %% "scalamock" % "4.4.0" % "test"
     ),
 
     resolvers += "Sonatype Snapshots" at "https://oss.sonatype.org/content/repositories/snapshots/",
@@ -76,12 +76,7 @@ lazy val `sbt-scommons-plugin` = (project in file("."))
     sonatypeProfileName := "org.scommons",
     publishMavenStyle := true,
     publishArtifact in Test := false,
-    publishTo := {
-      if (isSnapshot.value)
-        Some("snapshots" at "https://oss.sonatype.org/content/repositories/snapshots")
-      else
-        Some("releases" at "https://oss.sonatype.org/service/local/staging/deploy/maven2")
-    },
+    publishTo := sonatypePublishToBundle.value,
     pomExtra := {
       <url>https://github.com/scommons/sbt-scommons-plugin</url>
         <licenses>

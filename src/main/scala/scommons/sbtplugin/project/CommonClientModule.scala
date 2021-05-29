@@ -72,6 +72,7 @@ object CommonClientModule {
     requireJsDomEnv in Test := false,
     version in webpack := "4.29.0",
     emitSourceMaps := false,
+    webpackEmitSourceMaps := false,
 
     npmDependencies in Compile ++= Seq(
       "react" -> "^16.8.0",

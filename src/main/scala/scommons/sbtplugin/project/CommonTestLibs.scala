@@ -5,14 +5,14 @@ import sbt._
 
 trait CommonTestLibs {
 
-  val scalaTestVersion = "3.0.5"
-  val scalaMockVersion = "3.6.0"
+  val scalaTestVersion = "3.2.2"
+  val scalaMockVersion = "4.4.0"
   val dockerTestkitVersion = "0.9.6"
 
   val akkaVersion: String = CommonLibs.akkaVersion
 
   lazy val scalaTest = Def.setting("org.scalatest" %% "scalatest" % scalaTestVersion)
-  lazy val scalaMock = Def.setting("org.scalamock" %% "scalamock-scalatest-support" % scalaMockVersion)
+  lazy val scalaMock = Def.setting("org.scalamock" %% "scalamock" % scalaMockVersion)
 
   lazy val mockito = Def.setting("org.mockito" % "mockito-all" % "1.9.5")
 
@@ -25,7 +25,7 @@ trait CommonTestLibs {
   // Scala.js dependencies
 
   lazy val scalaTestJs = Def.setting("org.scalatest" %%% "scalatest" % scalaTestVersion)
-  lazy val scalaMockJs = Def.setting("org.scalamock" %%% "scalamock-scalatest-support" % scalaMockVersion)
+  lazy val scalaMockJs = Def.setting("org.scalamock" %%% "scalamock" % scalaMockVersion)
 }
 
 object CommonTestLibs extends CommonTestLibs

@@ -35,6 +35,7 @@ lazy val client = (project in file("client"))
     webpackConfigFile in Test := Some(baseDirectory.value / "test.webpack.config.js"),
     
     emitSourceMaps := false,
+    webpackEmitSourceMaps := false,
 
     npmDevDependencies in Compile ++= Seq(
       "css-loader" -> "2.1.1",
