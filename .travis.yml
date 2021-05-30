@@ -24,7 +24,7 @@ script:
   if [ "$TRAVIS_PULL_REQUEST" == "false" ] && [ "$TRAVIS_BRANCH" == "master" -o "$TRAVIS_BRANCH" == "$TRAVIS_TAG" ]; then
     if [ -z "$TRAVIS_TAG" ]; then
        echo "Publish a snapshot";
-       sbt ";^^1.0.2 ;clean ;publishSigned";
+       sbt ";^^1.0.2 ;clean ;publish";
     else
        echo "Publish a release version=$TRAVIS_TAG";
        version=$TRAVIS_TAG sbt ";^^1.0.2 ;clean ;publishSigned ;sonatypeBundleRelease";
@@ -35,6 +35,7 @@ script:
 cache:
   directories:
   - ~/.npm
+  - ~/.nvm
   - "$HOME/.ivy2/cache"
   - "$HOME/.sbt"
 before_cache:

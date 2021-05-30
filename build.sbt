@@ -68,7 +68,7 @@ lazy val `sbt-scommons-plugin` = (project in file("."))
       "org.scalamock" %% "scalamock" % "4.4.0" % "test"
     ),
 
-    resolvers += "Sonatype Snapshots" at "https://oss.sonatype.org/content/repositories/snapshots/",
+    //resolvers += "Sonatype Snapshots" at "https://oss.sonatype.org/content/repositories/snapshots/",
 
     //
     // publish/release related settings:
