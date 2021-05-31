@@ -6,6 +6,8 @@ import sbt._
 trait CommonTestLibs {
 
   val scalaTestVersion = "3.2.2"
+  val scalaTestPlusMockitoVersion = "3.2.2.0"
+  val scalaTestPlusPlayVersion = "3.1.2"
   val scalaMockVersion = "4.4.0"
   val dockerTestkitVersion = "0.9.6"
 
@@ -14,9 +16,8 @@ trait CommonTestLibs {
   lazy val scalaTest = Def.setting("org.scalatest" %% "scalatest" % scalaTestVersion)
   lazy val scalaMock = Def.setting("org.scalamock" %% "scalamock" % scalaMockVersion)
 
-  lazy val mockito = Def.setting("org.mockito" % "mockito-all" % "1.9.5")
-
-  lazy val scalaTestPlusPlay = Def.setting("org.scalatestplus.play" %% "scalatestplus-play" % "3.1.2")
+  lazy val scalaTestPlusMockito = Def.setting("org.scalatestplus" %% "mockito-3-4" % scalaTestPlusMockitoVersion)
+  lazy val scalaTestPlusPlay = Def.setting("org.scalatestplus.play" %% "scalatestplus-play" % scalaTestPlusPlayVersion)
   lazy val akkaStreamTestKit = Def.setting("com.typesafe.akka" %% "akka-stream-testkit" % akkaVersion)
 
   lazy val dockerTestkitScalatest = Def.setting("com.whisk" %% "docker-testkit-scalatest" % dockerTestkitVersion)

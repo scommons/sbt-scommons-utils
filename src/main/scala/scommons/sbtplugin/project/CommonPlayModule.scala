@@ -72,6 +72,6 @@ trait CommonPlayModule extends CommonModule {
     
     CommonTestLibs.scalaTestPlusPlay.value,
     CommonTestLibs.akkaStreamTestKit.value,
-    CommonTestLibs.mockito.value
+    CommonTestLibs.scalaTestPlusMockito.value
   ).map(_ % "it,test"))
 }
