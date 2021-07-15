@@ -74,10 +74,10 @@ object ScommonsPlugin extends AutoPlugin {
     sjsStageSettings(fastOptJS, Test),
     sjsStageSettings(fullOptJS, Test),
 
-    fastOptJS in Test := {
+    Test / fastOptJS := {
       val logger = streams.value.log
       val testLibs = scommonsNodeJsTestLibs.value
-      val sjsOutput = (fastOptJS in Test).value
+      val sjsOutput = (Test / fastOptJS).value
       val targetDir = sjsOutput.data.getParentFile
       val bundleOutput =
         if (testLibs.nonEmpty) {
@@ -96,8 +96,8 @@ object ScommonsPlugin extends AutoPlugin {
         else sjsOutput
 
       if (scommonsRequireWebpackInTest.value) {
-        val customWebpackConfigFile = (webpackConfigFile in Test).value
-        val nodeArgs = (webpackNodeArgs in Test).value
+        val customWebpackConfigFile = (Test / webpackConfigFile).value
+        val nodeArgs = (Test / webpackNodeArgs).value
         val bundleName = bundleOutput.data.name.stripSuffix(".js")
         val webpackOutput = targetDir / s"$bundleName-webpack-out.js"
 
@@ -130,21 +130,21 @@ object ScommonsPlugin extends AutoPlugin {
   )
 
   private def sjsStageSettings(sjsStage: TaskKey[Attributed[File]], config: ConfigKey) = {
-    sjsStage in config := {
+    config / sjsStage := {
       copyWebpackResources(
         streams.value.log,
-        (crossTarget in (config, sjsStage)).value,
-        (fullClasspath in config).value,
+        (config / sjsStage / crossTarget).value,
+        (config / fullClasspath).value,
         scommonsResourcesFileFilter.value,
         scommonsResourcesArtifacts.value
       )
       genWebpackBundles(
         streams.value.log,
-        (crossTarget in (config, sjsStage)).value,
-        (fullClasspath in config).value,
+        (config / sjsStage / crossTarget).value,
+        (config / fullClasspath).value,
         scommonsBundlesFileFilter.value
       )
-      (sjsStage in config).value
+      (config / sjsStage).value
     }
   }
 

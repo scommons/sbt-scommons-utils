@@ -31,15 +31,15 @@ trait CommonPlayModule extends CommonModule {
         RoutesKeys.routesImport -= "controllers.Assets.Asset", //remove unused import warning from routes file
         coverageExcludedPackages := "<empty>;Reverse.*;router.*",
 
-        pipelineStages in Assets := Seq(scalaJSPipeline),
+        Assets / pipelineStages := Seq(scalaJSPipeline),
         pipelineStages := Seq(digest, gzip),
 
-        devCommands in scalaJSPipeline ++= Seq("test", "testOnly"),
+        scalaJSPipeline / devCommands ++= Seq("test", "testOnly"),
 
         // Expose as sbt-web assets some webpack build files of the scalajs projects
         //
-        webpackAssets in fastOptJS ++= WebpackAssets.ofScalaJSProjects(fastOptJS) { build => (build / "styles").allPaths }.value,
-        webpackAssets in fullOptJS ++= WebpackAssets.ofScalaJSProjects(fullOptJS) { build => (build / "styles").allPaths }.value
+        fastOptJS / webpackAssets ++= WebpackAssets.ofScalaJSProjects(fastOptJS) { build => (build / "styles").allPaths }.value,
+        fullOptJS / webpackAssets ++= WebpackAssets.ofScalaJSProjects(fullOptJS) { build => (build / "styles").allPaths }.value
       )
   }
 

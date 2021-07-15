@@ -31,12 +31,12 @@ trait CommonClientModule extends CommonModule {
         webpackBundlingMode := BundlingMode.LibraryOnly(),
         
         //dev
-        webpackConfigFile in fastOptJS := Some(baseDirectory.value / "client.webpack.config.js"),
+        fastOptJS / webpackConfigFile := Some(baseDirectory.value / "client.webpack.config.js"),
         //production
-        webpackConfigFile in fullOptJS := Some(baseDirectory.value / "client.webpack.config.js"),
+        fullOptJS / webpackConfigFile := Some(baseDirectory.value / "client.webpack.config.js"),
         //reload workflow and tests
         scommonsRequireWebpackInTest := true,
-        webpackConfigFile in Test := Some(baseDirectory.value / "test.webpack.config.js")
+        Test / webpackConfigFile := Some(baseDirectory.value / "test.webpack.config.js")
       )
   }
 
@@ -69,21 +69,21 @@ object CommonClientModule {
     
     //Opt-in @ScalaJSDefined by default
     scalacOptions += "-P:scalajs:sjsDefinedByDefault",
-    requireJsDomEnv in Test := false,
-    version in webpack := "4.29.0",
+    Test / requireJsDomEnv := false,
+    webpack / version := "4.29.0",
     emitSourceMaps := false,
     webpackEmitSourceMaps := false,
 
-    npmDependencies in Compile ++= Seq(
+    Compile / npmDependencies ++= Seq(
       "react" -> "^16.8.0",
       "react-dom" -> "^16.8.0"
     ),
-    npmResolutions in Compile ++= Map(
+    Compile / npmResolutions ++= Map(
       "react" -> "^16.8.0",
       "react-dom" -> "^16.8.0"
     ),
     
-    npmResolutions in Test ++= Map(
+    Test / npmResolutions ++= Map(
       "react" -> "^16.8.0",
       "react-dom" -> "^16.8.0"
     ),

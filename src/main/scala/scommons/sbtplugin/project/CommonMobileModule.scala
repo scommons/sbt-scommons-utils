@@ -61,25 +61,25 @@ object CommonMobileModule {
     scalacOptions += "-P:scalajs:sjsDefinedByDefault",
     
     // react-native DO NOT require DOM
-    requireJsDomEnv in Test := false,
-    version in webpack := "3.5.5", //TODO: migrate to 4.29.0
+    Test / requireJsDomEnv := false,
+    webpack / version := "3.5.5", //TODO: migrate to 4.29.0
     emitSourceMaps := false,
     webpackEmitSourceMaps := false,
 
-    npmDependencies in Compile ++= Seq(
+    Compile / npmDependencies ++= Seq(
       "react" -> "^16.8.0",
       "react-dom" -> "^16.8.0" //TODO: remove dependency on react-dom
     ),
-    npmResolutions in Compile ++= Map(
+    Compile / npmResolutions ++= Map(
       "react" -> "^16.8.0",
       "react-dom" -> "^16.8.0"
     ),
 
-    npmResolutions in Test ++= Map(
+    Test / npmResolutions ++= Map(
       "react" -> "^16.8.0",
       "react-dom" -> "^16.8.0"
     ),
-    npmDevDependencies in Test ++= Seq(
+    Test / npmDevDependencies ++= Seq(
       "module-alias" -> "2.2.2"
     ),
 
