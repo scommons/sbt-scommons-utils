@@ -14,7 +14,11 @@ lazy val `sbt-scommons-plugin` = (project in file("."))
     organization := "org.scommons.sbt",
     name := "sbt-scommons-plugin",
     description := "Sbt auto-plugin with common tasks/utils for Scala Commons modules",
-    scalaVersion := "2.12.7",
+    pluginCrossBuild / sbtVersion := {
+      scalaBinaryVersion.value match {
+        case "2.12" => "1.2.8"
+      }
+    },
     scalacOptions ++= Seq(
       //"-Xcheckinit",
       "-Xfatal-warnings",
@@ -29,7 +33,7 @@ lazy val `sbt-scommons-plugin` = (project in file("."))
       "-Ywarn-value-discard",
       "-Xfuture"
     ),
-    
+
     ideExcludedDirectories := {
       val base = baseDirectory.value
       List(
@@ -37,7 +41,7 @@ lazy val `sbt-scommons-plugin` = (project in file("."))
         base / "target"
       )
     },
-    
+
     //when run tests with coverage: "sbt clean coverage test coverageReport"
     coverageMinimum := 80,
     coverageHighlighting := false,
@@ -54,9 +58,9 @@ lazy val `sbt-scommons-plugin` = (project in file("."))
     addSbtPlugin("com.typesafe.play" % "sbt-plugin" % "2.6.21"), // same as CommonLibs.playVer
     addSbtPlugin("com.typesafe.sbt" % "sbt-gzip" % "1.0.2"),
     addSbtPlugin("com.typesafe.sbt" % "sbt-digest" % "1.1.3"),
-    
+
     //addSbtPlugin("com.storm-enroute" % "mecha" % "0.3"), //TODO: use version for sbt 1.x
-    
+
     addSbtPlugin("org.scoverage" % "sbt-scoverage" % "1.5.1"),
     addSbtPlugin("org.scoverage" % "sbt-coveralls" % "1.2.4"),
 
@@ -75,7 +79,7 @@ lazy val `sbt-scommons-plugin` = (project in file("."))
     //
     sonatypeProfileName := "org.scommons",
     publishMavenStyle := true,
-    publishArtifact in Test := false,
+    Test / publishArtifact := false,
     publishTo := sonatypePublishToBundle.value,
     pomExtra := {
       <url>https://github.com/scommons/sbt-scommons-plugin</url>

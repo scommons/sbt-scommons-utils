@@ -43,17 +43,17 @@ object WebpackAssetsPlugin extends AutoPlugin {
   import autoImport._
 
   override lazy val projectSettings = Seq(
-    webpackAssets in fastOptJS := Nil,
-    webpackAssets in fullOptJS := Nil,
-    scalaJSDev := pipelineStage(fastOptJS in Compile, scalaJSDev).value,
-    scalaJSProd := pipelineStage(fullOptJS in Compile, scalaJSProd).value
+    fastOptJS / webpackAssets := Nil,
+    fullOptJS / webpackAssets := Nil,
+    scalaJSDev := pipelineStage(Compile / fastOptJS, scalaJSDev).value,
+    scalaJSProd := pipelineStage(Compile / fullOptJS, scalaJSProd).value
   )
 
   def pipelineStage(sjsStage: TaskKey[Attributed[File]],
                     self: TaskKey[Pipeline.Stage]): Def.Initialize[Task[Pipeline.Stage]] = Def.taskDyn {
 
     val scalajsMappings = WebScalaJSBundlerPlugin.pipelineStage(sjsStage, self).value
-    val webpackMappings = (webpackAssets in sjsStage).value
+    val webpackMappings = (sjsStage / webpackAssets).value
 
     Def.task { mappings: Seq[PathMapping] =>
       scalajsMappings(mappings) ++ webpackMappings
