@@ -13,7 +13,7 @@ object WebpackAssets {
                (assets: File => PathFinder): Def.Initialize[Task[Seq[PathMapping]]] = Def.task {
 
     // resolve webpack assets after webpack task is finished
-    (webpack in (project, Compile, sjsStage in project)).value
+    val _ = (webpack in (project, Compile, sjsStage in project)).value
 
     val webpackBuildDir = (npmUpdate in (project, Compile)).value
     assets(webpackBuildDir).pair(Path.relativeTo(webpackBuildDir))
@@ -26,7 +26,7 @@ object WebpackAssets {
     
     Def.taskDyn {
       // resolve webpack assets after webpack task is finished
-      taskOnProjectsOnTask(projects, sjsStage, webpack).value
+      val _ = taskOnProjectsOnTask(projects, sjsStage, webpack).value
 
       val webpackBuildDirs = taskOnProjects(projects, npmUpdate).value
       
