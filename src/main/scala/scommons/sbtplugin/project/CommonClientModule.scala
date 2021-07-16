@@ -1,6 +1,5 @@
 package scommons.sbtplugin.project
 
-import com.typesafe.sbt.web.SbtWeb
 import org.portablescala.sbtplatformdeps.PlatformDepsPlugin.autoImport._
 import org.scalajs.sbtplugin.ScalaJSPlugin
 import org.scalajs.sbtplugin.ScalaJSPlugin.autoImport._
@@ -9,7 +8,6 @@ import sbt._
 import scommons.sbtplugin.ScommonsPlugin.autoImport._
 import scommons.sbtplugin.project.CommonModule.ideExcludedDirectories
 import scoverage.ScoverageKeys._
-import webscalajs.ScalaJSWeb
 
 import scalajsbundler.sbtplugin.ScalaJSBundlerPlugin
 import scalajsbundler.sbtplugin.ScalaJSBundlerPlugin.autoImport._
@@ -22,7 +20,7 @@ trait CommonClientModule extends CommonModule {
 
   override def definition: Project = {
     super.definition
-      .enablePlugins(ScalaJSPlugin, ScalaJSBundlerPlugin, ScalaJSWeb, SbtWeb)
+      .enablePlugins(ScalaJSPlugin, ScalaJSBundlerPlugin)
       .settings(CommonClientModule.settings: _*)
       .settings(
         coverageExcludedPackages := ".*Css",

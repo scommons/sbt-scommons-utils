@@ -62,9 +62,5 @@ lazy val server = (project in file("server"))
     ),
 
     scalaJSProjects := Seq(client),
-    pipelineStages in Assets := Seq(scalaJSPipeline),
-
-    // Expose as sbt-web assets some webpack build files of the `client` project
-    webpackAssets in fastOptJS ++= WebpackAssets.ofScalaJSProjects(fastOptJS) { build => (build / "styles").allPaths }.value,
-    webpackAssets in fullOptJS ++= WebpackAssets.ofScalaJSProjects(fullOptJS) { build => (build / "styles").allPaths }.value
+    pipelineStages in Assets := Seq(scalaJSPipeline)
   )

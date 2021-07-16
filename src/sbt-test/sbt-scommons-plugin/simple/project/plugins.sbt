@@ -7,3 +7,5 @@ sys.props.get("plugin.version") match {
   case _ => sys.error("""|The system property 'plugin.version' is not defined.
                          |Specify this property using the scriptedLaunchOpts -D.""".stripMargin)
 }
+
+addSbtPlugin("ch.epfl.scala" % "sbt-web-scalajs-bundler-sjs06" % "0.16.0")
